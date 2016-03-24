@@ -28,7 +28,7 @@ import {
 import {
   Topbar,
   Nav,
-  CollapsibleNav,
+  CollapsibleNav
 } from 'amazeui-react';
 
 import RouteLink from './components/RouteLink.jsx';
@@ -40,7 +40,6 @@ const App = React.createClass({
     return (
       <div className="page">
         <Topbar
-          className="ask-header"
           brand="CNODEJS"
           brandLink="/"
           inverse
@@ -62,7 +61,7 @@ const App = React.createClass({
         </main>
       </div>
     );
-  }
+  },
 });
 
 // Pages

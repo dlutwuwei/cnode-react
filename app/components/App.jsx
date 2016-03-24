@@ -56,7 +56,7 @@ var App = React.createClass({
 
 	getData(type,page) {
 		if(type=='index') type='';
-		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=10&page=${page||0}`, function(result) {
+		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||0}`, function(result) {
 			this.setState({
 				main: result.data,
 				loading: false
@@ -66,7 +66,7 @@ var App = React.createClass({
 	appendData(type, page){
 		if(type=='index') type='';
 		console.log('添加内容')
-		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=10&page=${page||0}`, function(result) {
+		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||0}`, function(result) {
 			this.setState({
 				main: this.state.main.concat(result.data),
 				loading: false,
@@ -117,7 +117,7 @@ var App = React.createClass({
 		
 	},
 	handleTouchEnd(event){
-		if(event.currentTarget.scrollTop==0&&event.changedTouches[0].pageY-this.start>3){
+		if(document.body.scrollTop==0&&event.changedTouches[0].pageY-this.start>3){
 			this.setState({
 				mrt: 0
 			});
@@ -147,7 +147,8 @@ var App = React.createClass({
 	},
 	render() {
 		let append;
-		append = <div className='appending'><i className="fa fa-circle-o-notch fa-spin"></i><span className='pulling'>加载更多...</span></div>
+		append = <div className='tail'><div className='appending'>
+		<i className="fa fa-circle-o-notch fa-spin"></i><span className='pulling'>加载更多...</span></div></div>
 		
 
 		if(this.state.loading){
