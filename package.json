@@ -1,0 +1,52 @@
+{
+  "name": "cnode-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/main.jsx",
+  "scripts": {
+    "lint": "eslint 'app/**/*.@(js|jsx)'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --devtool eval --progress --hot --colors --content-base app",
+    "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
+    "validate": "npm ls"
+  },
+  "dependencies": {
+    "react": "~0.14.3",
+    "react-dom": "~0.14.3",
+    "webpack": "~1.12.9",
+    "webpack-dev-server": "~1.14.0"
+  },
+  "devDependencies": {
+    "amazeui-react": "^1.0.1",
+    "babel-core": "~6.2.1",
+    "babel-eslint": "~4.1.6",
+    "babel-loader": "~6.2.0",
+    "babel-preset-es2015": "~6.1.18",
+    "babel-preset-react": "~6.1.18",
+    "babel-preset-stage-0": "~6.1.18",
+    "copy-webpack-plugin": "^1.1.1",
+    "css-loader": "~0.23.0",
+    "eslint": "~1.10.1",
+    "eslint-config-airbnb": "~1.0.0",
+    "eslint-plugin-react": "~3.10.0",
+    "less": "^2.6.1",
+    "less-loader": "^2.2.2",
+    "open-browser-webpack-plugin": "0.0.1",
+    "precommit-hook": "~3.0.0",
+    "react-router": "^2.0.1",
+    "style-loader": "~0.13.0"
+  },
+  "keywords": [
+    "es6",
+    "react",
+    "web app",
+    "cnode",
+    "webpack"
+  ],
+  "author": "Ruan Yifeng",
+  "license": "MIT",
+  "pre-commit": [
+    "lint"
+  ]
+}

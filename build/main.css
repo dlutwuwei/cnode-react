@@ -1,0 +1,27 @@
+body{
+	background-color: #fff;
+}
+html,body{
+/*	height: 100%;
+*/}
+main{
+/*	position: absolute;
+	top:0;
+	right:0;
+	left:0;
+	bottom: 0;
+	margin-top: 60px;
+*/
+padding-top: 60px;
+}
+.page{
+
+}
+
+.3d{
+	webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+}
