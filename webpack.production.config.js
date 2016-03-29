@@ -18,6 +18,9 @@ module.exports = {
       test: /\.less$/,
       loader: "style!css!less"
     }, {
+      test: /\.json$/,
+      loader: 'json'
+    }, {
       test: /\.css$/,
       include: path.resolve(__dirname, 'app'),
       loader: 'style-loader!css-loader'

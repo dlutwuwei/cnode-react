@@ -49,14 +49,14 @@ var App = React.createClass({
 	      navbar:[],
 	      loading: true,
 	      appending: false,
-	      page:0,
+	      page:1,
 	      mrt:0
 	    };
 	 },
 
 	getData(type,page) {
 		if(type=='index') type='';
-		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||0}`, function(result) {
+		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||1}`, function(result) {
 			this.setState({
 				main: result.data,
 				loading: false
@@ -66,7 +66,7 @@ var App = React.createClass({
 	appendData(type, page){
 		if(type=='index') type='';
 		console.log('添加内容')
-		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||0}`, function(result) {
+		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||1}`, function(result) {
 			this.setState({
 				main: this.state.main.concat(result.data),
 				loading: false,
@@ -95,18 +95,15 @@ var App = React.createClass({
     	window.removeEventListener('scroll', this.handleScroll);
 	},
 	handleScroll(event) { 
-		//if(event.target.scrollTop==0)console.log('hello')
+		//下拉加载
 		if (!this.state.appending&&(document.body.scrollTop + window.innerHeight) >=document.body.scrollHeight) {
 					//console.log(event.target.scrollTop,event.target.clientHeight,event.target.scrollHeight)
 			this.setState({appending: true})
-			this.appendData(this.props.params.type,this.state.page++)
+			this.appendData(this.props.params.type,++this.state.page)
 		}
 	},
 	handleTouchStart(event){
-		this.start = event.touches[0].pageY;
-
-		//console.log('start',touches[0].pageY)
-		
+		this.start = event.touches[0].pageY;		
 	},
 	handleTouchMove(event){
 
@@ -146,6 +143,8 @@ var App = React.createClass({
 		}) 
 	},
 	render() {
+
+
 		let append;
 		append = <div className='tail'><div className='appending'>
 		<i className="fa fa-circle-o-notch fa-spin"></i><span className='pulling'>加载更多...</span></div></div>
@@ -160,7 +159,7 @@ var App = React.createClass({
 		}else{
 			return ( 
 				<div id='content' className="container 3d" onTouchStart={this.handleTouchStart} onTouchMove={this.handleTouchMove} onTouchEnd={this.handleTouchEnd}>
-					<ul style={{marginTop: this.state.mrt+'px'}}>
+					<ul>
 						{this.renderChildren(this.state.main)}
 					</ul>
 					{this.state.appending?append:''}

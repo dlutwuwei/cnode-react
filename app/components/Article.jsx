@@ -1,8 +1,15 @@
 import React from 'react';
 import $ from 'jquery';
+
 import {
-	Article
-} from 'amazeui-react';
+	fromNow
+} from '../utils/format.js';
+
+require('./Article.less');
+
+import Reply from './Reply.jsx';
+import Xinput from './Xinput.jsx';
+
 export default React.createClass({
 
 	getInitialState() {
@@ -10,7 +17,12 @@ export default React.createClass({
 	      title: '',
 	      contnet:'',
 	      replies:[],
-	      loading: false
+	      author:{},
+	      loading: false,
+	      visit_count: 0,
+	      author_id:'',
+	      caninput:false,
+	      replyid:''
 	    };
 	 },
 	componentDidUpdate(prevProps){
@@ -29,7 +41,14 @@ export default React.createClass({
 				title: result.data.title,
 				content: result.data.content,
 				replies: result.data.replies,
-				loading: false
+				author: result.data.author,
+				visit_count: result.data.visit_count,
+				create_at: result.data.create_at,
+				last_reply_at: result.data.last_reply_at,
+				reply_count: result.data.reply_count,
+				tab: result.data.tab,
+				loading: false,
+				author_id: result.data.author_id
 			});
 		}.bind(this));
 		this.setState({loading:true})
@@ -41,7 +60,39 @@ export default React.createClass({
 			</div>
 			)
 	},
+	handleClick(){
+		this.setState({
+			caninput:true
+		});
+	},
+	onCancel(){
+		this.setState({
+			caninput:false
+		})
+	},
+	replytoClick(evt){
+		var target = evt.target;
+		var ref = target.getAttribute('ref');
+		if(ref=="replyto"){
+			this.setState({
+				caninput: true,
+				replyid: target.getAttribute('replyid')
+			});
+		}
+	},
 	render(){
+
+		var replies = this.state.replies.map((item, index)=>{
+			return (
+				<Reply data={item} key={index} author_id={this.state.author_id}></Reply>
+			)
+		});
+
+		var textarea;
+		if(this.state.caninput){
+			textarea =<Xinput onCancel={this.onCancel} id={this.props.params.id}/>
+		}	
+		
 		if(this.state.loading){
 			return (
 				<div className="container">
@@ -51,11 +102,30 @@ export default React.createClass({
 
 		}else{
 			return (
-				<Article
-	    			meta="">
-					<div dangerouslySetInnerHTML={{__html:this.state.content}}></div>
-
-				</Article>
+				<div className='article' meta="">
+	    			<h2 className='title'>{this.state.title}</h2>
+	    			<div className="author">
+	    				<img src={this.state.author.avatar_url} alt="" className="avatar"/>
+	    				<div className="info">
+	    					<div className="col">
+	    						<span className="name">{this.state.author.loginname}</span>
+	    						<span className={"right tag "+this.state.tab}></span>
+	    					</div>
+	    					<div className="col">
+	    						<span className="ptime">发布于{fromNow(this.state.create_at)}前</span>
+	    						<span className="right">{this.state.visit_count}浏览</span>
+	    					</div>
+	    				</div>
+	    			</div>
+					<article dangerouslySetInnerHTML={{__html:this.state.content}}></article>
+					<section className="reply" onClick={this.replytoClick}>
+						<ul className="replies">
+							{replies}
+						</ul>
+					</section>
+					<div className="answer fa fa-reply-all" onClick={this.handleClick}></div>
+					{textarea}	
+				</div>
 			);
 		}
 		

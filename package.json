@@ -12,8 +12,10 @@
     "validate": "npm ls"
   },
   "dependencies": {
+    "classnames": "^2.2.3",
     "react": "~0.14.3",
     "react-dom": "~0.14.3",
+    "react-markdown": "^2.1.1",
     "webpack": "~1.12.9",
     "webpack-dev-server": "~1.14.0"
   },
@@ -32,6 +34,7 @@
     "eslint-plugin-react": "~3.10.0",
     "jQuery": "^1.7.4",
     "jquery": "^2.2.2",
+    "json-loader": "^0.5.4",
     "less": "^2.6.1",
     "less-loader": "^2.2.2",
     "open-browser-webpack-plugin": "0.0.1",

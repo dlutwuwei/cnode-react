@@ -1,5 +1,9 @@
 import React from 'react';
 
+import classnames from 'classnames';
+import {
+	fromNow
+} from '../utils/format.js';
 
 require('./ListItem.less');
 
@@ -8,9 +12,9 @@ var ListItem = React.createClass({
     render() {
     	let info = this.props;
         return (
-            <li className='article'>
+            <li className='list-item'>
              <a href={"#/article/"+info.id}>
-				<div className="title">
+				<div className={classnames("title",info.top?'top':info.tab)}>
 					{info.title}
 				</div>
 				<div className="content" >
@@ -20,8 +24,8 @@ var ListItem = React.createClass({
 							<span className="name">{info.author.loginname}</span>
 							<span className="reply">{info.reply_count}/{info.visit_count}</span></p>
 						<p>
-							<span className="post_time">{((new Date().getTime() - new Date(info.create_at).getTime())/3600/1000).toFixed(0)}小时</span>
-							<span className="reply_time">{((new Date().getTime() - new Date(info.last_reply_at).getTime())/3600/1000).toFixed(0)}小时</span>
+							<span className="post_time">{fromNow(info.create_at)}前</span>
+							<span className="reply_time">{fromNow(info.last_reply_at)}前</span>
 						</p>
 					</div>
 				</div>    
