@@ -1,0 +1,81 @@
+.article {
+	background-color: #eee;
+	.title{
+		background-color: #fff;
+		padding:10px;
+	}
+	.author {
+		padding: 0 10px;
+		overflow: hidden;
+		margin: 15px 0;
+
+		.avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 3px;
+			float: left;
+		}
+		.info {
+			padding-left: 55px;
+			font-size: 12px;
+
+			.col, .left {
+				line-height: 20px;
+				overflow: hidden;
+			}
+			.right {
+				float: right;
+			}
+			.tag:before{
+				padding: 3px 3px;
+			    font-size: 10px;
+			    font-weight: 400;
+			    border-radius: 3px;
+			    text-align: center;
+			    vertical-align: middle;
+			    color: #fff;
+			}
+			.reply_right {
+				font-size: 20px;
+				line-height: 40px;
+				vertical-align: middle;
+
+				span {
+					vertical-align: middle;
+					padding-right: 5px;
+					letter-spacing: 5px;
+				}
+			}
+			p {
+				margin: 0;
+			}
+		}
+	}
+	article {
+		padding: 10px;
+		background-color: #fff;
+	}
+	.replies {
+		margin-top: 10px;
+		padding: 0 10px;
+		padding-top: 10px;
+		background-color: #fff;
+
+		li {
+			border-bottom: solid 1px #d4d4d4;
+		}
+	}
+	.answer {
+		height: 60px;
+		width: 60px;
+		border-radius: 30px;
+		background-color: #0e90d2;
+		color: #fff;
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+		line-height: 60px;
+		text-align: center;
+		font-size: 30px;
+	}
+}

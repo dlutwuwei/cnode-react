@@ -10,6 +10,7 @@ require('./Article.less');
 import Reply from './Reply.jsx';
 import Xinput from './Xinput.jsx';
 
+var accesstoken = localStorage.getItem('accesstoken');
 export default React.createClass({
 
 	getInitialState() {
@@ -22,7 +23,9 @@ export default React.createClass({
 	      visit_count: 0,
 	      author_id:'',
 	      caninput:false,
-	      replyid:''
+	      replyid:'',
+	      author_name:'',
+	      accesstoken: accesstoken
 	    };
 	 },
 	componentDidUpdate(prevProps){
@@ -61,6 +64,11 @@ export default React.createClass({
 			)
 	},
 	handleClick(){
+		var accesstoken = this.getAccessToken();
+		if(!accesstoken){
+			this.props.history.pushState(null,'/login');
+			return;
+		}
 		this.setState({
 			caninput:true
 		});
@@ -71,26 +79,49 @@ export default React.createClass({
 		})
 	},
 	replytoClick(evt){
+		// 获取要回复的replyid
 		var target = evt.target;
-		var ref = target.getAttribute('ref');
-		if(ref=="replyto"){
+		var ref = target.getAttribute('data-ref');
+		if(this.getAccessToken()&&ref=="replyto"){
 			this.setState({
 				caninput: true,
-				replyid: target.getAttribute('replyid')
+				replyid: target.getAttribute('data-replyid'),
+				author_name: target.getAttribute('data-author-name')
 			});
+		}else{
+			this.props.history.pushState(null,'/login');
 		}
+	},
+	getAccessToken(){
+		return localStorage.getItem('accesstoken')
+	},
+	postComment(evt){
+
+		$.post(`https://cnodejs.org/api/v1/topic/${this.props.params.id}/replies`,{
+			accesstoken: accesstoken,
+			content:  $('.markdown-textarea #html').html(),
+			reply_id: this.state.replyid
+		},function(result){
+			if(result.success == true){
+				this.onCancel();
+				this.getData(this.props.params.id)
+
+			}else{
+				this.props.history.pushState(null,'/login');
+			}
+		}.bind(this))
 	},
 	render(){
 
 		var replies = this.state.replies.map((item, index)=>{
 			return (
-				<Reply data={item} key={index} author_id={this.state.author_id}></Reply>
+				<Reply data={item} key={index} author_id={this.state.author_id} onReply={this.replytoClick}></Reply>
 			)
 		});
 
 		var textarea;
 		if(this.state.caninput){
-			textarea =<Xinput onCancel={this.onCancel} id={this.props.params.id}/>
+			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid={this.state.replyid} placeholder={'@'+this.state.author_name} id={this.props.params.id} />
 		}	
 		
 		if(this.state.loading){

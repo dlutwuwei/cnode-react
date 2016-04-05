@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
+    "cookie": "^0.2.3",
     "react": "~0.14.3",
     "react-dom": "~0.14.3",
     "react-markdown": "^2.1.1",

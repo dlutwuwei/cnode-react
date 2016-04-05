@@ -162,6 +162,8 @@ var App = React.createClass({
 					<ul>
 						{this.renderChildren(this.state.main)}
 					</ul>
+					<div className="answer fa fa-reply-all" onClick={this.handleClick}></div>
+
 					{this.state.appending?append:''}
 				</div>
 			);
