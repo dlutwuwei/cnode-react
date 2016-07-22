@@ -23,14 +23,14 @@ export default React.createClass({
 		const accesstoken = localStorage.getItem('accesstoken');
 		var head;
 		if(accesstoken){
-			head = <div className="login">
+			head = <div className="nav-login">
 						<a href="#/me">
 							<img src={localStorage.getItem('avatar_url')} alt=""/>
 							<span>{localStorage.getItem('loginname')}</span>
 						</a>
 					</div>
 		}else{
-			head = <div className="login">
+			head = <div className="nav-login">
 						<a href="#/login" className='fa-arrow-circle-right'>登陆</a>
 					</div>
 		}

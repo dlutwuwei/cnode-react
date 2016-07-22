@@ -29,11 +29,11 @@ import {
   CollapsibleNav
 } from 'amazeui-react';
 
-
-require('./main.less')
+require('./amaze.ui.css');
+require('./main.less');
 
 import RouteLink from './components/RouteLink.jsx';
-// import SiteFooter from './components/SiteFooter.jsx';
+//import SiteFooter from './components/SiteFooter.jsx';
 
 
 // Pages
@@ -47,7 +47,7 @@ import Nav from './components/Nav.jsx';
 const App = React.createClass({
 
   render() {
-    var loginname = localStorage.getItem('loginname');
+    const loginname = localStorage.getItem('loginname');
     return (
       <div className="page">
         <Nav></Nav>

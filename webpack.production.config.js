@@ -2,6 +2,8 @@ var webpack = require('webpack');
 var path = require('path');
 var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'cheap-source-map',
@@ -11,19 +13,19 @@ module.exports = {
   output: {
     path: __dirname + '/build',
     publicPath: '/',
-    filename: './bundle.js'
+    filename: 'bundle.js'
   },
   module: {
     loaders: [{
       test: /\.less$/,
-      loader: "style!css!less"
+      loader: ExtractTextPlugin.extract('style', '!css!less')
     }, {
       test: /\.json$/,
       loader: 'json'
     }, {
       test: /\.css$/,
       include: path.resolve(__dirname, 'app'),
-      loader: 'style-loader!css-loader'
+      loader: ExtractTextPlugin.extract('style', '!css')
     }, {
       test: /\.js[x]?$/,
       include: path.resolve(__dirname, 'app'),
@@ -36,17 +38,16 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.DedupePlugin(),
+    new ExtractTextPlugin('app.css'),
+    new HtmlWebpackPlugin({
+      title:'cnode react app',
+      template: 'app/index.html',
+      inject: 'body',
+    }),
     new uglifyJsPlugin({
       compress: {
         warnings: false
       }
-    }),
-    new CopyWebpackPlugin([{
-      from: './app/index.html',
-      to: 'index.html'
-    }, {
-      from: './app/main.css',
-      to: 'main.css'
-    }]),
+    })
   ]
 };

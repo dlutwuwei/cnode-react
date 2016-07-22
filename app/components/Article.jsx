@@ -39,7 +39,7 @@ export default React.createClass({
 		this.getData(this.props.params.id);
 	},
 	getData(id){
-		$.get('http://cnodejs.org/api/v1/topic/'+id, function(result) {
+		$.get('//cnodejs.org/api/v1/topic/'+id, function(result) {
 			this.setState({
 				title: result.data.title,
 				content: result.data.content,
@@ -66,7 +66,7 @@ export default React.createClass({
 	handleClick(){
 		var accesstoken = this.getAccessToken();
 		if(!accesstoken){
-			this.props.history.pushState(null,'/login');
+			this.props.history.pushState(location,'/login');
 			return;
 		}
 		this.setState({
@@ -97,7 +97,7 @@ export default React.createClass({
 	},
 	postComment(evt){
 
-		$.post(`https://cnodejs.org/api/v1/topic/${this.props.params.id}/replies`,{
+		$.post(`//cnodejs.org/api/v1/topic/${this.props.params.id}/replies`,{
 			accesstoken: accesstoken,
 			content:  $('.markdown-textarea #html').html(),
 			reply_id: this.state.replyid
@@ -105,7 +105,6 @@ export default React.createClass({
 			if(result.success == true){
 				this.onCancel();
 				this.getData(this.props.params.id)
-
 			}else{
 				this.props.history.pushState(null,'/login');
 			}

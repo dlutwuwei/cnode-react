@@ -26,7 +26,7 @@ require('./App.less');
 //   },
 //   {
 //     title: '下载使用',
-//     link: 'http://amazeui.org/getting-started',
+//     link: '//amazeui.org/getting-started',
 //     icon: 'download'
 //   },
 //   {
@@ -56,7 +56,7 @@ var App = React.createClass({
 
 	getData(type,page) {
 		if(type=='index') type='';
-		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||1}`, function(result) {
+		$.get(`//cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||1}`, function(result) {
 			this.setState({
 				main: result.data,
 				loading: false
@@ -66,7 +66,7 @@ var App = React.createClass({
 	appendData(type, page){
 		if(type=='index') type='';
 		console.log('添加内容')
-		$.get(`http://cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||1}`, function(result) {
+		$.get(`//cnodejs.org/api/v1/topics?tab=${type||''}&limit=30&page=${page||1}`, function(result) {
 			this.setState({
 				main: this.state.main.concat(result.data),
 				loading: false,
