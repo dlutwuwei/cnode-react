@@ -10,7 +10,7 @@ require('./Article.less');
 import Reply from './Reply.jsx';
 import Xinput from './Xinput.jsx';
 
-var accesstoken = localStorage.getItem('accesstoken');
+const accesstoken = localStorage.getItem('accesstoken');
 export default React.createClass({
 
 	getInitialState() {
@@ -66,7 +66,7 @@ export default React.createClass({
 	handleClick(){
 		var accesstoken = this.getAccessToken();
 		if(!accesstoken){
-			this.props.history.pushState(location,'/login');
+			this.props.history.push(locationtion,'/login');
 			return;
 		}
 		this.setState({
@@ -88,9 +88,10 @@ export default React.createClass({
 				replyid: target.getAttribute('data-replyid'),
 				author_name: target.getAttribute('data-author-name')
 			});
-		}else{
-			this.props.history.pushState(null,'/login');
 		}
+		// }else{
+		// 	this.props.history.push(location,'/login');
+		// }
 	},
 	getAccessToken(){
 		return localStorage.getItem('accesstoken')
@@ -106,7 +107,7 @@ export default React.createClass({
 				this.onCancel();
 				this.getData(this.props.params.id)
 			}else{
-				this.props.history.pushState(null,'/login');
+				this.props.history.push(location,'/login');
 			}
 		}.bind(this))
 	},

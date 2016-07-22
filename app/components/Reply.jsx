@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import classnames from 'classnames';
 
 import {
 	fromNow
@@ -8,19 +9,24 @@ import {
 
 export default React.createClass({
 	getInitialState(){
+		const data = this.props.data;
 		return {
-			id: '',
-			author: {},
-			content: "",
-			ups: [],
-			create_at: ""
+			id: data.id,
+			author: data.author,
+			content: data.content,
+			ups: data.ups,
+			create_at: data.create_at
 		}
 	},
+	componentUpdate(){
+	},
 	componentDidMount(){
-		this.setState(this.props.data);
+	},
+	componentWillUnmount(){
 	},
 	clickup(id){
-		return () =>{
+		return (e) =>{
+			e.stopPropagation();
 			$.post(`//cnodejs.org/api/v1/reply/${id}/ups`,{accesstoken:'e9204b2f-0558-4ca1-a6c6-c690bcc11a92'}).success((data)=>{
 				if(data.success==true){
 					var newups = this.state.ups.slice();
@@ -43,15 +49,15 @@ export default React.createClass({
 					<img src={this.state.author.avatar_url} alt="" className="avatar"/>
 					<div className="info">
 						<div className="right reply_right">
-							<span className="up fa fa-thumbs-up" onClick={this.clickup(this.state.id)}>{this.state.ups.length}</span>
+							<span className={classnames("up fa fa-thumbs-up",this.state.author.loginname==localStorage.getItem('loginname')?'hide':'')} onClick={this.clickup(this.state.id)}>{this.state.ups.length}</span>
 							<span className="replyto fa fa-reply" data-ref='replyto' data-replyid={this.state.id} data-author-name={this.state.author.loginname} onClick={this.props.onReply}></span>
 						</div>
 						<div className="left">
 							<p className="name">{this.state.author.loginname}</p>
 							<span className="ptime">发布于{fromNow(this.state.create_at)}前</span>
 						</div>
-		    				</div>
-					</div>
+		    		</div>
+				</div>
 				<div className="reply_content" dangerouslySetInnerHTML={{__html:this.state.content}}></div>
 			</li>
 		);
