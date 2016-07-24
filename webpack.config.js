@@ -13,46 +13,49 @@ module.exports = {
     contentBase: './app',
     port: 8080
   },
-  // entry: [
-  //   'webpack/hot/dev-server',
-  //   'webpack-dev-server/client?http://localhost:8080',
-  //   path.resolve(__dirname, 'app/main.jsx')
-  // ],
   entry: {
-    'main': path.resolve(__dirname, 'app/main.jsx')
+    'main': path.resolve(__dirname, 'app/main.jsx'),
+    'redux': path.resolve(__dirname, 'app/redux_main.jsx')
   },
   output: {
     path: __dirname + '/build',
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   module: {
-    loaders: [
-      {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style', '!css!less')
-      }, {
-        test: /\.json$/,
-        loader: 'json'
-      }, {
-        test: /\.css$/,
-        include: path.resolve(__dirname, 'app'),
-        loader: ExtractTextPlugin.extract('style', '!css')
-      }, {
-        test: /\.js[x]?$/,
-        include: path.resolve(__dirname, 'app'),
-        exclude: /node_modules/,
-        loader: 'babel-loader'
-      }
-    ]
+    loaders: [{
+      test: /\.less$/,
+      loader: ExtractTextPlugin.extract('style', '!css!less')
+    }, {
+      test: /\.json$/,
+      loader: 'json'
+    }, {
+      test: /\.css$/,
+      include: path.resolve(__dirname, 'app'),
+      loader: ExtractTextPlugin.extract('style', '!css')
+    }, {
+      test: /\.js[x]?$/,
+      include: path.resolve(__dirname, 'app'),
+      exclude: /node_modules/,
+      loader: 'babel-loader'
+    }]
   },
   plugins: [
-    new ExtractTextPlugin('app.css'),
     new HtmlWebpackPlugin({
-      title:'cnode react app',
+      title: 'cnode react app',
       template: 'app/index.html',
+      filename: 'index.html',
       inject: 'body',
+      chunks: ['main']
     }),
+    new HtmlWebpackPlugin({
+      title: 'cnode redux app',
+      template: 'app/index.html',
+      filename: 'redux.html',
+      inject: 'body',
+      chunks: ['redux']
+    }),
+    new ExtractTextPlugin('app.css'),
     new webpack.HotModuleReplacementPlugin(),
     new OpenBrowserPlugin({
       url: 'https://localhost:8080'
