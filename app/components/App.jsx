@@ -1,13 +1,5 @@
 import React from 'react';
 import ListItem from './ListItem.jsx';
-import {
-	Button,
-	ListNews,
-	Nav,
-	NavItem,
-	Icon,
-	Navbar
-} from 'amazeui-react';
 
 import $ from 'jquery';
 

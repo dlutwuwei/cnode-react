@@ -9,7 +9,6 @@ var login = React.createClass({
 		$.post('//cnodejs.org/api/v1/accesstoken', {
 			accesstoken: $('#code').val()
 		}, function (ret) {
-
 			if (ret.success == true) {
 				localStorage.setItem('loginname', ret.loginname);
 				localStorage.setItem('loginid', ret.id);

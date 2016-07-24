@@ -1,17 +1,3 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
-
-// import App from './components/App.jsx';
-// require('./index.js')
-
-
-
-// ReactDOM.render(
-//   <App/>,
-//   document.body.appendChild(document.createElement('div'))
-// );
-
 import React from 'react';
 import {
   render,
@@ -44,16 +30,16 @@ import login from './components/Login.jsx';
 import Nav from './components/Nav.jsx';
 
 
-const App = React.createClass({
+const Main = React.createClass({
 
   render() {
     const loginname = localStorage.getItem('loginname');
     return (
       <div className="page">
         <Nav></Nav>
-        <main id="main" className="main 3d">
+        <div id="main" className="main 3d">
           {this.props.children}
-        </main>
+        </div>
       </div>
     );
   },
@@ -62,7 +48,7 @@ const App = React.createClass({
 
 const routes = (
   <Router history={hashHistory}>
-    <Route path="/" component={App}>
+    <Route path="/" component={Main}>
       <IndexRoute component={Index} />
       <Route path="/me" component={me}/>
       <Route path="/login" component={login}/>
