@@ -1,11 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-
-import reducers from './reducers'
+import configureStore from './store/storeConfig.js';
 
 
 // Pages
@@ -19,8 +17,10 @@ require('./amaze.ui.css');
 require('./main.less');
 
 
-const Main = React.createClass({
-
+class Main extends React.Component {
+  constructor(props,  context) {
+      super(props, context);
+  }
   render() {
     const loginname = localStorage.getItem('loginname');
     return (
@@ -31,13 +31,17 @@ const Main = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 
+
+const store = configureStore();
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(browserHistory, store)
 const routes = (
-  <Router history={browserHistory}>
-    <Route path="/" component={Main}>
+  <Router history={history}>
+    <Route path="/redex.html" component={Main}>
       <IndexRoute component={Index} />
       <Route path="/me" component={me}/>
       <Route path="/login" component={login}/>
@@ -47,20 +51,12 @@ const routes = (
   </Router>
 );
 
-// Add the reducer to your store on the `routing` key
-const store = createStore(
-  combineReducers({
-    ...reducers,
-    routing: routerReducer
-  })
-)
-
-// Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render(
   <Provider store={store}>
+    <div>
     {routes}
+    </div>
   </Provider>,
-  document.body
+  document.getElementById('mount')
 )

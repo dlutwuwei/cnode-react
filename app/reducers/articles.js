@@ -1,9 +1,13 @@
+import * as types from '../constants/ActionTypes';
 
-export default function articles(state = initialState, action) {
-  switch (action.type) {
-    case FETCH_ARTICALS:
-      return state;
-    default:
-      return state
-  }
+export function articleList(state = {}, action) {
+    switch (action.type) {
+        case types.FETCH_ARTICALS:
+          return Object.assign({}, state, {
+            data: action.posts,
+            loading: false
+          });
+        default:
+          return state;
+    }
 }

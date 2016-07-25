@@ -10,15 +10,10 @@ import {
   hashHistory,
 } from 'react-router';
 
-import {
-  Topbar,
-  CollapsibleNav
-} from 'amazeui-react';
-
 require('./amaze.ui.css');
 require('./main.less');
 
-import RouteLink from './components/RouteLink.jsx';
+// import RouteLink from './components/RouteLink.jsx';
 //import SiteFooter from './components/SiteFooter.jsx';
 
 
