@@ -1,6 +1,6 @@
 import React from 'react';
 import ListItem from './ListItem.jsx';
-import { fetchArticles } from '../actions';
+import { fetchArticles, isAppending } from '../actions';
 import $ from 'jquery';
 import { connect } from 'react-redux'
 
@@ -10,36 +10,15 @@ require('./App.less');
 var App = React.createClass({
 	getInitialState() {
 		return {
-			header: {},
 			main: [],
-			navbar: [],
 			loading: true,
 			appending: false,
 			page: 1,
 			mrt: 0
 		};
 	},
-	getData(type, page) {
-		if (type.indexOf('.html')>0) type = '';
-		$.get(`//cnodejs.org/api/v1/topics?tab=${type || ''}&limit=30&page=${page || 1}`, function (result) {
-			this.setState({
-				main: result.data,
-				loading: false
-			});
-		}.bind(this));
-	},
-	appendData(type, page) {
-		if (type.indexOf('.html')>0) type = '';
-		$.get(`//cnodejs.org/api/v1/topics?tab=${type || ''}&limit=30&page=${page || 1}`, function (result) {
-			this.setState({
-				main: this.state.main.concat(result.data),
-				loading: false,
-				appending: false
-			});
-		}.bind(this));
-
-	},
 	componentDidUpdate(prevProps) {
+
 		let oldId = prevProps.params.type;
 		let newId = this.props.params.type;
 		if (newId !== oldId) {
@@ -48,26 +27,26 @@ var App = React.createClass({
 				loading: true
 			})
 		}
-
 	},
 	componentDidMount() {
+
 		const { dispatch, params } = this.props;
 
 		window.addEventListener('scroll', this.handleScroll);
-		console.log('第一次载入')
-		//this.getData(this.props.params.type);
-		dispatch(fetchArticles(params.type));
-
+		dispatch(fetchArticles(params.type, this.props.page));
 	},
 	componentWillUnmount() {
+
 		window.removeEventListener('scroll', this.handleScroll);
 	},
 	handleScroll(event) {
+
+		const { dispatch, params, page } = this.props;
 		//下拉加载
 		if (!this.state.appending && (document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
 			//console.log(event.target.scrollTop,event.target.clientHeight,event.target.scrollHeight)
-			this.setState({ appending: true })
-			this.appendData(this.props.params.type, ++this.state.page)
+			dispatch(fetchArticles(params.type, page+1));
+
 		}
 	},
 	handleTouchStart(event) {
@@ -90,7 +69,6 @@ var App = React.createClass({
 		}
 		if (this.interval > 0) {
 			console.log('到顶向下拉');
-
 		}
 
 	},
@@ -109,26 +87,23 @@ var App = React.createClass({
 		})
 	},
 	render() {
-				console.log(this.props)
-
-		let append;
-		append = <div className='tail'><div className='appending'>
+		let append = <div className='tail'><div className='appending'>
 			<i className="fa fa-circle-o-notch fa-spin"></i><span className='pulling'>加载更多...</span></div></div>
 
-		if (this.props.articleList.loading) {
+		if (this.props.articleList&&this.props.articleList.loading) {
 			return (
 				<div className="container">
 					{this.renderLoading() }
 				</div>
 			);
-		} else if(this.props.articleList.data) {
+		} else if(this.props.articleList&&this.props.articleList.data) {
 			return (
 				<div id='content' className="container 3d" onTouchStart={this.handleTouchStart} onTouchMove={this.handleTouchMove} onTouchEnd={this.handleTouchEnd}>
 					<ul>
 						{this.renderChildren(this.props.articleList.data) }
 					</ul>
 					<div className="answer fa fa-reply-all" onClick={this.handleClick}></div>
-					{this.state.appending ? append : ''}
+					{this.props.articleList.appending ? append : ''}
 				</div>
 			);
 		}
@@ -137,6 +112,15 @@ var App = React.createClass({
 });
 
 function select(state) {
-	return state;
+	return Object.assign({
+		header: {},
+		main: [],
+		page: 1,
+		mrt: 0,
+		articleList:{
+			appending: false,
+			loading: true
+		}
+	}, state);
 }
 export default connect(select)(App);

@@ -1,10 +1,10 @@
+import React from 'react';
 import { createStore, applyMiddleware, combineReducers} from 'redux';
 import * as reducers from '../reducers';
 import thunkMiddleware from 'redux-thunk';
 import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
-import React from 'react';
 import { routerReducer } from 'react-router-redux';
 
 const createStoreWithMiddleware = applyMiddleware(
@@ -24,6 +24,7 @@ const rootReducers = combineReducers({
 
 export default function configureStore() {
     const store = createStoreWithMiddleware(rootReducers, DevTools.instrument());
+    //const store = createStore(rootReducers);
     if (module.hot) {
         // 启动Webpack的reducers模块热替换
         module.hot.accept('../reducers', () => {
