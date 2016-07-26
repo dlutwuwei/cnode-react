@@ -18,14 +18,15 @@ var App = React.createClass({
 		};
 	},
 	componentDidUpdate(prevProps) {
-
+		const { dispatch } = this.props;
 		let oldId = prevProps.params.type;
 		let newId = this.props.params.type;
 		if (newId !== oldId) {
-			this.getData(newId);
-			this.setState({
-				loading: true
-			})
+			dispatch(fetchArticles(newId||'', this.props.page));
+			//this.getData(newId);
+			// this.setState({
+			// 	loading: true
+			// })
 		}
 	},
 	componentDidMount() {
@@ -33,10 +34,9 @@ var App = React.createClass({
 		const { dispatch, params } = this.props;
 
 		window.addEventListener('scroll', this.handleScroll);
-		dispatch(fetchArticles(params.type, this.props.page));
+		dispatch(fetchArticles(params.type||'', this.props.page));
 	},
 	componentWillUnmount() {
-
 		window.removeEventListener('scroll', this.handleScroll);
 	},
 	handleScroll(event) {

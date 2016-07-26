@@ -41,7 +41,7 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store)
 const routes = (
   <Router history={history}>
-    <Route path="/redex.html" component={Main}>
+    <Route path="/" component={Main}>
       <IndexRoute component={Index} />
       <Route path="/me" component={me}/>
       <Route path="/login" component={login}/>
