@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import ListItem from './ListItem.jsx';
-import { fetchArticles, isAppending } from '../actions';
+import { fetchList, isAppending, fetchArticle} from '../actions';
 import $ from 'jquery';
-import { connect } from 'react-redux'
 
 
 require('./App.less');
@@ -22,7 +23,7 @@ var App = React.createClass({
 		let oldId = prevProps.params.type;
 		let newId = this.props.params.type;
 		if (newId !== oldId) {
-			dispatch(fetchArticles(newId||'', this.props.page));
+			dispatch(fetchList(newId||'', this.props.page));
 			//this.getData(newId);
 			// this.setState({
 			// 	loading: true
@@ -34,7 +35,7 @@ var App = React.createClass({
 		const { dispatch, params } = this.props;
 
 		window.addEventListener('scroll', this.handleScroll);
-		dispatch(fetchArticles(params.type||'', this.props.page));
+		dispatch(fetchList(params.type||'', this.props.page));
 	},
 	componentWillUnmount() {
 		window.removeEventListener('scroll', this.handleScroll);
@@ -45,7 +46,7 @@ var App = React.createClass({
 		//下拉加载
 		if (!this.state.appending && (document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
 			//console.log(event.target.scrollTop,event.target.clientHeight,event.target.scrollHeight)
-			dispatch(fetchArticles(params.type, page+1));
+			dispatch(fetchList(params.type, page+1));
 
 		}
 	},

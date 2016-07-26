@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import $ from 'jquery';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 require('./Nav.less');
 
 export default React.createClass({
@@ -38,7 +38,7 @@ export default React.createClass({
 			<div className='sider'>
 				{head}
 				<ul>
-					<li><Link to="/index" className='fa fa-align-justify'>全部</Link></li>
+					<li><Link to="/" className='fa fa-align-justify'>全部</Link></li>
 					<li><Link to="/share" className='fa-share-alt'>分享</Link></li>
 					<li><Link to="/good" className='fa-thumbs-up'>精华</Link></li>
 					<li><Link to="/ask" className='fa-question-circle'>问答</Link></li>
@@ -52,7 +52,7 @@ export default React.createClass({
 	render(){
 		return <div className="header">
 			<div className='navtop'>			
-				<Link to="/index" className='brand'>CNODEJS</Link>
+				<Link to="/" className='brand'>CNODEJS</Link>
 				<button onClick={this.unfold} className="fa fa-align-justify"></button>
 			</div>
 			<div className="container" onClick={this.fold}>

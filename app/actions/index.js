@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 
 function receivePosts(category, page, json) {
   return {
-    type: types.FETCH_ARTICALES,
+    type: types.FETCH_LIST,
     category: category,
     page: page,
     posts: json.data,
@@ -13,7 +13,15 @@ function receivePosts(category, page, json) {
   };
 }
 
-function fetchPosts(category, page) {
+function receiveArticle(data) {
+  return {
+    type: types.FETCH_ARTICLE,
+    data: data
+  };
+}
+
+
+export const fetchList = (category, page) => {
   if (category.indexOf('.html') > 0) category = '';
   return dispatch => {
     dispatch(isAppending());
@@ -22,17 +30,29 @@ function fetchPosts(category, page) {
       .then(response => response.json())
       .then(json => dispatch(receivePosts(category, page, json)));
   };
+};
+
+export const fetchArticle = (id) =>{
+   return dispatch => {
+    dispatch(isLoading());
+
+    return fetch(`//cnodejs.org/api/v1/topic/${id || ''}`)
+      .then(response => response.json())
+      .then(json => dispatch(receiveArticle(json)));
+  };
 }
 
-export const fetchArticles = (category, page) => {
-  return (dispatch) => {
-    return dispatch(fetchPosts(category, page));
-  };
-};
 
 export function isAppending() {
   return {
-    type: types.ISAPPENDING_ARTICALES,
+    type: types.ISAPPENDING_ARTICLES,
+    value: true
+  }
+}
+
+export function isLoading(){
+  return {
+    type: types.ISLOADING_ARTICLE,
     value: true
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import {
 	fromNow
@@ -13,7 +13,7 @@ var ListItem = React.createClass({
     	let info = this.props;
         return (
             <li className='list-item'>
-             <a href={"#/article/"+info.id}>
+             <Link to={"/article/"+info.id}>
 				<div className={classnames("title",info.top?'top':info.tab)}>
 					{info.title}
 				</div>
@@ -22,14 +22,15 @@ var ListItem = React.createClass({
 					<div className="info">
 						<p>
 							<span className="name">{info.author.loginname}</span>
-							<span className="reply">{info.reply_count}/{info.visit_count}</span></p>
+							<span className="reply">{info.reply_count}/{info.visit_count}</span>
+						</p>
 						<p>
 							<span className="post_time">{fromNow(info.create_at)}前</span>
 							<span className="reply_time">{fromNow(info.last_reply_at)}前</span>
 						</p>
 					</div>
 				</div>    
-				</a>          
+			</Link>          
             </li>);
     }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import $ from 'jquery';
-
 import {
 	fromNow
 } from '../utils/format.js';
@@ -9,9 +9,10 @@ require('./Article.less');
 
 import Reply from './Reply.jsx';
 import Xinput from './Xinput.jsx';
+import { fetchArticle } from '../actions';
 
 const accesstoken = localStorage.getItem('accesstoken');
-export default React.createClass({
+var Article = React.createClass({
 
 	getInitialState() {
 	    return {
@@ -39,22 +40,8 @@ export default React.createClass({
 		this.getData(this.props.params.id);
 	},
 	getData(id){
-		$.get('//cnodejs.org/api/v1/topic/'+id, function(result) {
-			this.setState({
-				title: result.data.title,
-				content: result.data.content,
-				replies: result.data.replies,
-				author: result.data.author,
-				visit_count: result.data.visit_count,
-				create_at: result.data.create_at,
-				last_reply_at: result.data.last_reply_at,
-				reply_count: result.data.reply_count,
-				tab: result.data.tab,
-				loading: false,
-				author_id: result.data.author_id
-			});
-		}.bind(this));
-		this.setState({loading:true})
+		const { dispatch } = this.props;
+		dispatch(fetchArticle(id));
 	},
 	renderLoading(){
 		return (
@@ -66,7 +53,7 @@ export default React.createClass({
 	handleClick(){
 		var accesstoken = this.getAccessToken();
 		if(!accesstoken){
-			this.props.history.push(locationtion,'/login');
+			this.props.history.push(location,'/login');
 			return;
 		}
 		this.setState({
@@ -101,7 +88,7 @@ export default React.createClass({
 		$.post(`//cnodejs.org/api/v1/topic/${this.props.params.id}/replies`,{
 			accesstoken: accesstoken,
 			content:  $('.markdown-textarea #html').html(),
-			reply_id: this.state.replyid
+			reply_id: this.props.fetchArticle.data.replyid
 		},function(result){
 			if(result.success == true){
 				this.onCancel();
@@ -113,52 +100,59 @@ export default React.createClass({
 	},
 	render(){
 
-		var replies = this.state.replies.map((item, index)=>{
-			return (
-				<Reply data={item} key={index} author_id={this.state.author_id} onReply={this.replytoClick}></Reply>
-			)
-		});
-
-		var textarea;
-		if(this.state.caninput){
-			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid={this.state.replyid} placeholder={'@'+this.state.author_name} id={this.props.params.id} />
-		}	
-		
-		if(this.state.loading){
+		if(this.props.fetchArticle.loading){
 			return (
 				<div className="container">
 					{this.renderLoading()}
 				</div>
 			);
 
-		}else{
-			return (
-				<div className='article' meta="">
-	    			<h2 className='title'>{this.state.title}</h2>
-	    			<div className="author">
-	    				<img src={this.state.author.avatar_url} alt="" className="avatar"/>
-	    				<div className="info">
-	    					<div className="col">
-	    						<span className="name">{this.state.author.loginname}</span>
-	    						<span className={"right tag "+this.state.tab}></span>
-	    					</div>
-	    					<div className="col">
-	    						<span className="ptime">发布于{fromNow(this.state.create_at)}前</span>
-	    						<span className="right">{this.state.visit_count}浏览</span>
-	    					</div>
-	    				</div>
-	    			</div>
-					<article dangerouslySetInnerHTML={{__html:this.state.content}}></article>
-					<section className="reply" onClick={this.replytoClick}>
-						<ul className="replies">
-							{replies}
-						</ul>
-					</section>
-					<div className="answer fa fa-reply-all" onClick={this.handleClick}></div>
-					{textarea}	
-				</div>
-			);
 		}
+		if(!this.props.fetchArticle || !this.props.fetchArticle.data) return null;
+
+		var replies = this.props.fetchArticle.data.replies.map((item, index)=>{
+			return (
+				<Reply data={item} key={index} author_id={this.props.fetchArticle.data.author_id} onReply={this.replytoClick}></Reply>
+			)
+		});
+
+		var textarea;
+		if(this.props.fetchArticle.data.caninput){
+			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid={this.props.fetchArticle.data.replyid} placeholder={'@'+this.props.fetchArticle.data.author_name} id={this.props.params.id} />
+		}	
+		
+		
+		return (
+			<div className='article' meta="">
+    			<h2 className='title'>{this.props.fetchArticle.data.title}</h2>
+    			<div className="author">
+    				<img src={this.props.fetchArticle.data.author.avatar_url} alt="" className="avatar"/>
+    				<div className="info">
+    					<div className="col">
+    						<span className="name">{this.props.fetchArticle.data.author.loginname}</span>
+    						<span className={"right tag "+this.props.fetchArticle.data.tab}></span>
+    					</div>
+    					<div className="col">
+    						<span className="ptime">发布于{fromNow(this.props.fetchArticle.data.create_at)}前</span>
+    						<span className="right">{this.props.fetchArticle.data.visit_count}浏览</span>
+    					</div>
+    				</div>
+    			</div>
+				<article dangerouslySetInnerHTML={{__html:this.props.fetchArticle.data.content}}></article>
+				<section className="reply" onClick={this.replytoClick}>
+					<ul className="replies">
+						{replies}
+					</ul>
+				</section>
+				<div className="answer fa fa-reply-all" onClick={this.handleClick}></div>
+				{textarea}	
+			</div>
+		);
+		
 		
 	}
 });
+function select(state) {
+	return state;
+}
+export default connect(select)(Article);
