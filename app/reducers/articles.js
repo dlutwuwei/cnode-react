@@ -7,13 +7,15 @@ export function articleList(state = {}, action) {
 				return Object.assign({}, state, {
 					data: action.posts,
 					loading: false,
-					appending: false
+					appending: false,
+					page: 1
 				});
 			} else {
 				return Object.assign({}, state, {
 					data: state.data.concat(action.posts),
 					loading: false,
-					appending: false
+					appending: false,
+					page: action.page
 				});
 			}
 		case types.ISAPPENDING_ARTICALES:
@@ -26,7 +28,7 @@ export function articleList(state = {}, action) {
 }
 
 export function fetchArticle(state = {}, action) {
-	console.log(action.type, state)
+	//console.log(action.type, state)
 
 	switch (action.type) {
 		case types.FETCH_ARTICLE:
@@ -37,6 +39,28 @@ export function fetchArticle(state = {}, action) {
 			return Object.assign({}, state, {
 				loading: true
 			});
+		default:
+			return state;
+	}
+}
+
+export function input(state = {}, action) {
+	switch (action.type) {
+		case types.OPEN_INPUT:
+			return {
+				...state,
+				canInput: action.value
+			};
+		case types.CLOSE_INPUT:
+			return {
+				...state,
+				canInput: action.value
+			};
+		case types.INPUT_VALUE:
+			return {
+				...state,
+				value: action.value
+			};
 		default:
 			return state;
 	}

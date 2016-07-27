@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import $ from 'jquery';
 import {
@@ -9,26 +9,10 @@ require('./Article.less');
 
 import Reply from './Reply.jsx';
 import Xinput from './Xinput.jsx';
-import { fetchArticle } from '../actions';
+import { fetchArticle, canInput, closeInput } from '../actions';
 
 const accesstoken = localStorage.getItem('accesstoken');
 var Article = React.createClass({
-
-	getInitialState() {
-	    return {
-	      title: '',
-	      contnet:'',
-	      replies:[],
-	      author:{},
-	      loading: false,
-	      visit_count: 0,
-	      author_id:'',
-	      caninput:false,
-	      replyid:'',
-	      author_name:'',
-	      accesstoken: accesstoken
-	    };
-	 },
 	componentDidUpdate(prevProps){
 		let oldId = prevProps.params.id;
 	    let newId = this.props.params.id;
@@ -50,20 +34,16 @@ var Article = React.createClass({
 			</div>
 			)
 	},
-	handleClick(){
+	handleReplyClick(){
 		var accesstoken = this.getAccessToken();
 		if(!accesstoken){
 			this.props.history.push(location,'/login');
 			return;
 		}
-		this.setState({
-			caninput:true
-		});
+		this.props.dispatch(canInput());
 	},
 	onCancel(){
-		this.setState({
-			caninput:false
-		})
+		this.props.dispatch(closeInput());
 	},
 	replytoClick(evt){
 		// 获取要回复的replyid
@@ -81,7 +61,7 @@ var Article = React.createClass({
 		// }
 	},
 	getAccessToken(){
-		return localStorage.getItem('accesstoken')
+		return localStorage.getItem('accesstoken');
 	},
 	postComment(evt){
 
@@ -99,7 +79,7 @@ var Article = React.createClass({
 		}.bind(this))
 	},
 	render(){
-
+		//console.log('article props', this.props)
 		if(this.props.fetchArticle.loading){
 			return (
 				<div className="container">
@@ -110,20 +90,20 @@ var Article = React.createClass({
 		}
 		if(!this.props.fetchArticle || !this.props.fetchArticle.data) return null;
 
-		var replies = this.props.fetchArticle.data.replies.map((item, index)=>{
+		const replies = this.props.fetchArticle.data.replies.map((item, index)=>{
 			return (
 				<Reply data={item} key={index} author_id={this.props.fetchArticle.data.author_id} onReply={this.replytoClick}></Reply>
 			)
 		});
 
-		var textarea;
-		if(this.props.fetchArticle.data.caninput){
+		let textarea = null;
+		if(this.props.input.canInput){
 			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid={this.props.fetchArticle.data.replyid} placeholder={'@'+this.props.fetchArticle.data.author_name} id={this.props.params.id} />
 		}	
-		
-		
+
 		return (
-			<div className='article' meta="">
+			<div>
+			<div className='article'>
     			<h2 className='title'>{this.props.fetchArticle.data.title}</h2>
     			<div className="author">
     				<img src={this.props.fetchArticle.data.author.avatar_url} alt="" className="avatar"/>
@@ -144,15 +124,31 @@ var Article = React.createClass({
 						{replies}
 					</ul>
 				</section>
-				<div className="answer fa fa-reply-all" onClick={this.handleClick}></div>
-				{textarea}	
+				<div className="answer fa fa-reply-all" onClick={this.handleReplyClick}></div>
 			</div>
+			{textarea}
+			</div>	
 		);
 		
 		
 	}
 });
-function select(state) {
-	return state;
+
+Article.propTypes = {
+  fetchArticle: PropTypes.object.isRequired,
 }
-export default connect(select)(Article);
+
+function mapStateToProps(state) {
+	console.log('article', state)
+	return {
+		input: state.input,
+		fetchArticle: state.fetchArticle
+	};
+}
+
+function mapDispatchToProps(dispatch){
+	return {
+		dispatch
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Article);

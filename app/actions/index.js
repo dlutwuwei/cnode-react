@@ -32,27 +32,40 @@ export const fetchList = (category, page) => {
   };
 };
 
-export const fetchArticle = (id) =>{
-   return dispatch => {
+export const fetchArticle = (id) => {
+  return dispatch => {
     dispatch(isLoading());
 
     return fetch(`//cnodejs.org/api/v1/topic/${id || ''}`)
       .then(response => response.json())
       .then(json => dispatch(receiveArticle(json)));
   };
-}
-
+};
 
 export function isAppending() {
   return {
     type: types.ISAPPENDING_ARTICLES,
     value: true
-  }
+  };
 }
 
-export function isLoading(){
+export function isLoading() {
   return {
     type: types.ISLOADING_ARTICLE,
     value: true
-  }
+  };
+}
+
+export function canInput() {
+  return {
+    type: types.OPEN_INPUT,
+    value: true
+  };
+}
+
+export function closeInput() {
+  return {
+    type: types.CLOSE_INPUT,
+    value: false
+  };
 }

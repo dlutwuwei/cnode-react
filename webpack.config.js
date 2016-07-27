@@ -51,7 +51,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'cnode redux app',
       template: 'app/index.html',
-      filename: 'redux.html',
+      filename: 'index.html',
       inject: 'body',
       chunks: ['redux']
     }),
