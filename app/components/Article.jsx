@@ -9,7 +9,7 @@ require('./Article.less');
 
 import Reply from './Reply.jsx';
 import Xinput from './Xinput.jsx';
-import { fetchArticle, canInput, closeInput } from '../actions';
+import { fetchArticle, canInput, closeInput, upReply } from '../actions';
 
 const accesstoken = localStorage.getItem('accesstoken');
 var Article = React.createClass({
@@ -34,7 +34,7 @@ var Article = React.createClass({
 			</div>
 			)
 	},
-	handleReplyClick(){
+	onReplyClick(){
 		var accesstoken = this.getAccessToken();
 		if(!accesstoken){
 			this.props.history.push(location,'/login');
@@ -56,14 +56,12 @@ var Article = React.createClass({
 				author_name: target.getAttribute('data-author-name')
 			});
 		}
-		// }else{
-		// 	this.props.history.push(location,'/login');
-		// }
+
 	},
 	getAccessToken(){
 		return localStorage.getItem('accesstoken');
 	},
-	postComment(evt){
+	onPostComment(evt){
 
 		$.post(`//cnodejs.org/api/v1/topic/${this.props.params.id}/replies`,{
 			accesstoken: accesstoken,
@@ -78,9 +76,18 @@ var Article = React.createClass({
 			}
 		}.bind(this))
 	},
+	onUpClick(id) {
+		var _this = this;
+		return (e) => {
+			e.stopPropagation();
+			let accesstoken = localStorage.getItem('accesstoken');
+			_this.props.dispatch(upReply(id, accesstoken));
+		}
+	},
 	render(){
-		//console.log('article props', this.props)
-		if(this.props.fetchArticle.loading){
+
+		const { fetchArticle, input } = this.props;
+		if(fetchArticle.loading){
 			return (
 				<div className="container">
 					{this.renderLoading()}
@@ -88,43 +95,44 @@ var Article = React.createClass({
 			);
 
 		}
-		if(!this.props.fetchArticle || !this.props.fetchArticle.data) return null;
+		if(!fetchArticle || !fetchArticle.data) return null;
 
-		const replies = this.props.fetchArticle.data.replies.map((item, index)=>{
+		const replies = fetchArticle.data.replies.map((item, index)=>{
 			return (
-				<Reply data={item} key={index} author_id={this.props.fetchArticle.data.author_id} onReply={this.replytoClick}></Reply>
+				<Reply data={item} key={index} author_id={fetchArticle.data.author_id} onReply={this.replytoClick} onUpClick={this.onUpClick(item.id)}></Reply>
 			)
 		});
 
 		let textarea = null;
-		if(this.props.input.canInput){
-			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid={this.props.fetchArticle.data.replyid} placeholder={'@'+this.props.fetchArticle.data.author_name} id={this.props.params.id} />
+		if(input.canInput){
+			textarea =<Xinput onCancel={this.onCancel} onPost={this.onPostComment} replyid={fetchArticle.data.replyid} placeholder={'@'+fetchArticle.data.author_name} id={this.props.params.id} />
 		}	
-
+		
+		
 		return (
 			<div>
 			<div className='article'>
-    			<h2 className='title'>{this.props.fetchArticle.data.title}</h2>
+    			<h2 className='title'>{fetchArticle.data.title}</h2>
     			<div className="author">
-    				<img src={this.props.fetchArticle.data.author.avatar_url} alt="" className="avatar"/>
+    				<img src={fetchArticle.data.author.avatar_url} alt="" className="avatar"/>
     				<div className="info">
     					<div className="col">
-    						<span className="name">{this.props.fetchArticle.data.author.loginname}</span>
-    						<span className={"right tag "+this.props.fetchArticle.data.tab}></span>
+    						<span className="name">{fetchArticle.data.author.loginname}</span>
+    						<span className={"right tag "+fetchArticle.data.tab}></span>
     					</div>
     					<div className="col">
-    						<span className="ptime">发布于{fromNow(this.props.fetchArticle.data.create_at)}前</span>
-    						<span className="right">{this.props.fetchArticle.data.visit_count}浏览</span>
+    						<span className="ptime">发布于{fromNow(fetchArticle.data.create_at)}前</span>
+    						<span className="right">{fetchArticle.data.visit_count}浏览</span>
     					</div>
     				</div>
     			</div>
-				<article dangerouslySetInnerHTML={{__html:this.props.fetchArticle.data.content}}></article>
+				<article dangerouslySetInnerHTML={{__html:fetchArticle.data.content}}></article>
 				<section className="reply" onClick={this.replytoClick}>
 					<ul className="replies">
 						{replies}
 					</ul>
 				</section>
-				<div className="answer fa fa-reply-all" onClick={this.handleReplyClick}></div>
+				<div className="answer fa fa-reply-all" onClick={this.onReplyClick}></div>
 			</div>
 			{textarea}
 			</div>	

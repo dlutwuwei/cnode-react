@@ -7,13 +7,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'cheap-source-map',
-  entry: [
-    path.resolve(__dirname, 'app/main.jsx'),
-  ],
+  entry: {
+     'main': path.resolve(__dirname, 'app/main.jsx'),
+    'redux': path.resolve(__dirname, 'app/redux_main.jsx')
+  },
   output: {
     path: __dirname + '/build',
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   module: {
     loaders: [{
@@ -39,16 +40,9 @@ module.exports = {
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
-      title: 'cnode react app',
-      template: 'app/index.html',
-      filename: 'index.html',
-      inject: 'body',
-      chunks: ['main']
-    }),
-    new HtmlWebpackPlugin({
       title: 'cnode redux app',
       template: 'app/index.html',
-      filename: 'redux.html',
+      filename: 'index.html',
       inject: 'body',
       chunks: ['redux']
     }),

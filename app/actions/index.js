@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import fetch from 'isomorphic-fetch';
+//import fetch from 'isomorphic-fetch';
 
 
 function receivePosts(category, page, json) {
@@ -20,6 +20,13 @@ function receiveArticle(data) {
   };
 }
 
+function upSuccess(data) {
+  return {
+    type: types.UP_REPLY,
+    data: data.success,
+    action: data.action
+  };
+}
 
 export const fetchList = (category, page) => {
   if (category.indexOf('.html') > 0) category = '';
@@ -42,6 +49,19 @@ export const fetchArticle = (id) => {
   };
 };
 
+export const upReply = (id, accesstoken) => {
+  return dispatch => {
+    return fetch(`//cnodejs.org/api/v1/reply/${id}/ups`, {
+      method: 'POST',
+      header:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ accesstoken })
+    }).then(reponse => response.json())
+      .then(json => dispatch(upSuccess(json)));
+  };
+};
 export function isAppending() {
   return {
     type: types.ISAPPENDING_ARTICLES,

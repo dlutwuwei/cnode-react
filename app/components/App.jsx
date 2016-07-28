@@ -40,7 +40,7 @@ var App = React.createClass({
 		//下拉加载
 		if (!this.props.articleList.appending && (document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
 			//console.log(event.target.scrollTop,event.target.clientHeight,event.target.scrollHeight)
-			dispatch(fetchList(params.type, this.props.articleList.page + 1));
+			dispatch(fetchList(params.type||'', this.props.articleList.page + 1));
 		}
 	},
 	handleClick(){
@@ -103,7 +103,7 @@ var App = React.createClass({
 		let textarea = null;
 		if(this.props.input.canInput){
 			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid="" placeholder=""/>
-		}	
+		}
 		if (this.props.articleList.loading) {
 			return (
 				<div className="container">
