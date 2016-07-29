@@ -115,7 +115,7 @@ export function canInput(author, reply_id) {
     type: types.OPEN_INPUT,
     value: true,
     author: author,
-    reply_id: reply_id
+    reply_id: reply_id || ''
   };
 }
 
