@@ -7,7 +7,7 @@
     "lint": "eslint 'app/**/*.@(js|jsx)'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -p",
-    "start": "webpack-dev-server --https --devtool eval --progress --hot --host 0.0.0.0 --colors --content-base app",
+    "start": "webpack-dev-server --http --devtool eval --progress --hot --host 0.0.0.0 --colors --content-base app",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js",
     "validate": "npm ls"
   },
@@ -19,7 +19,8 @@
     "react-markdown": "^2.1.1",
     "redux-thunk": "^2.1.0",
     "webpack": "~1.12.9",
-    "webpack-dev-server": "~1.14.0"
+    "webpack-dev-server": "~1.14.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "~6.2.1",

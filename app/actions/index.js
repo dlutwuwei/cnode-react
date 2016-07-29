@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-//import fetch from 'isomorphic-fetch';
-
+import post from '../utils/ajax.js';
+import fetch from 'isomorphic-fetch';
 
 function receivePosts(category, page, json) {
   return {
@@ -20,12 +20,21 @@ function receiveArticle(data) {
   };
 }
 
-function upSuccess(data) {
+function upSuccess(data, id, index) {
   return {
     type: types.UP_REPLY,
-    data: data.success,
-    action: data.action
+    success: data.success,
+    action: data.action,
+    id: id,
+    index: index
   };
+}
+
+function postCommentSuccess(data) {
+  return {
+    type: types.POST_COMMENT,
+    success: data.success
+  }
 }
 
 export const fetchList = (category, page) => {
@@ -49,19 +58,44 @@ export const fetchArticle = (id) => {
   };
 };
 
-export const upReply = (id, accesstoken) => {
+export const upReply = (id, index, accesstoken) => {
   return dispatch => {
-    return fetch(`//cnodejs.org/api/v1/reply/${id}/ups`, {
-      method: 'POST',
-      header:{
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ accesstoken })
-    }).then(reponse => response.json())
-      .then(json => dispatch(upSuccess(json)));
+    // return fetch(`https://cnodejs.org/api/v1/reply/${id}/ups`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   cache: 'defalut',
+    //   mode: 'cors',
+    //   body: JSON.stringify({ accesstoken })
+    // })
+    return post(`//cnodejs.org/api/v1/reply/${id}/ups`, {
+      accesstoken: accesstoken
+    })
+      .then(response => dispatch(upSuccess(JSON.parse(response), id, index)));
   };
 };
+
+export const postReply = (id, replyid, accesstoken) => {
+  return dispatch => {
+    return post(`//cnodejs.org/api/v1/topic/${id}/replies`, {
+      accesstoken: accesstoken,
+      content: document.querySelector('.markdown-textarea #html').innerHTML,
+      reply_id: replyid
+    })
+      .then(response => {
+        const res = JSON.parse(response);
+        if (res.success === true) {
+          dispatch(closeInput());
+        } else {
+          alert('post failed');
+        }
+        // dispatch( postCommentSuccess(JSON.parse(response)) );
+      });
+  };
+};
+
 export function isAppending() {
   return {
     type: types.ISAPPENDING_ARTICLES,
@@ -76,10 +110,12 @@ export function isLoading() {
   };
 }
 
-export function canInput() {
+export function canInput(author, reply_id) {
   return {
     type: types.OPEN_INPUT,
-    value: true
+    value: true,
+    author: author,
+    reply_id: reply_id
   };
 }
 
@@ -89,3 +125,5 @@ export function closeInput() {
     value: false
   };
 }
+
+

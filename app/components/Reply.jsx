@@ -22,8 +22,8 @@ export default React.createClass({
 					<img src={data.author.avatar_url} alt="" className="avatar"/>
 					<div className="info">
 						<div className="right reply_right">
-							<span className={classnames("up fa fa-thumbs-up", data.author.loginname == localStorage.getItem('loginname') ? 'hide' : '') } onClick={this.props.onUpClick}>{data.ups.length}</span>
-							<span className="replyto fa fa-reply" data-ref='replyto' data-replyid={data.id} data-author-name={data.author.loginname} onClick={this.props.onReply}></span>
+							<span className={classnames("up fa fa-thumbs-up", data.author.loginname == localStorage.getItem('loginname') ? 'hide' : '') } onClick={this.props.onUpClick}>{data.ups}</span>
+							<span className="replyto fa fa-reply" data-ref='replyto' data-replyid={data.id} data-author-name={data.author.loginname} onClick={this.props.onReplyClick}></span>
 						</div>
 						<div className="left">
 							<p className="name">{data.author.loginname}</p>

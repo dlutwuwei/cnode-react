@@ -1,52 +1,77 @@
 
-function creatXmlHttpRequest() {
-    var xmlHttp;
-    if (window.ActiveObject) {
-        xmlHttp = new ActiveXObject('Micorsoft.XMLHTTP');
-    } else if (window.XmlHttpRequest) {
-        xmlHttp = new XmlHttpRequest();
-    }
-    return xmlHttp;
-}
+// ajax({
+//     url: './TestXHR.aspx',              //请求地址
+//     type: 'POST',                       //请求方式
+//     data: { name: 'super', age: 20 },        //请求参数
+//     dataType: 'json',
+//     success: function (response, xml) {
+//         // 此处放成功后执行的代码
+//     },
+//     fail: function (status) {
+//         // 此处放失败后执行的代码
+//     }
+// });
 
-function ajax(conf) {
-    var type = conf.type;//type参数,可选
-    var url = conf.url;//url参数，必填
-    var data = conf.data;//data参数可选，只有在post请求时需要
-    var dataType = conf.dataType;//datatype参数可选
-    var success = conf.success;//回调函数可选
-    if (type == null) {//type参数可选，默认为get
-        type = "get";
+function ajax(opts) {
+    const options = opts || {};
+    options.type = (options.type || 'GET').toUpperCase();
+    options.dataType = options.dataType || 'json';
+    const params = formatParams(options.data);
+    let xhr;
+    // 创建 - 非IE6 - 第一步
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
     }
-    if (dataType == null) {//dataType参数可选，默认为text
-        dataType = "text";
-    }
-    var xhr = creatXmlHttpRequest();
-    xhr.open(type, url, true);
-    if (type == "GET" || type == "get") {
-        xhr.send(null);
-    } else if (type == "POST" || type == "post") {
-        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-        xhr.send(data);
-    }
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            if (dataType == "text" || dataType == "TEXT") {
-                if (success != null) {//普通文本
-                    success(xhr.responseText);
-                }
-            } else if (dataType == "xml" || dataType == "XML") {
-                if (success != null) {//接收xml文档
-                    success(xhr.responseXML);
-                }
-            } else if (dataType == "json" || dataType == "JSON") {
-                if (success != null) {//将json字符串转换为js对象
-                    success(eval("(" + xhr.responseText + ")"));
-                }
+
+    // 接收 - 第三步
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+            const status = xhr.status;
+            if (status >= 200 && status < 300) {
+                options.success && options.success(xhr.responseText, xhr.responseXML);
+            } else {
+                options.fail && options.fail(status);
             }
         }
     };
 
+    // 连接 和 发送 - 第二步
+    if (options.type === 'GET') {
+        xhr.open('GET', options.url + '?' + params, true);
+        xhr.send(null);
+    } else if (options.type === 'POST') {
+        xhr.open('POST', options.url, true);
+        // 设置表单提交时的内容类型
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(params);
+    }
+}
+// 格式化参数
+function formatParams(data) {
+    const arr = [];
+    if (data) {
+        for (const name in data) {
+            arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+        }
+    }
+    arr.push(('v=' + Math.random()).replace('.'));
+    return arr.join('&');
 }
 
-export ajax;
+export default (url, data) => {
+    return new Promise((resolve, reject) => {
+        ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: (responseData) => {
+                resolve(responseData);
+            },
+            fail: () => {
+                reject();
+            }
+        });
+    });
+};

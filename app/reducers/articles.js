@@ -32,6 +32,14 @@ export function fetchArticle(state = {}, action) {
 
 	switch (action.type) {
 		case types.FETCH_ARTICLE:
+			if(action.data && action.data.data.replies){
+				let replies = action.data.data.replies;
+				replies = replies.map(function(item){
+					var l = item.ups.length;
+					item.ups = l;
+					return item;
+				});
+			}
 			return Object.assign({}, state, action.data, {
 				loading: false
 			});
@@ -39,6 +47,15 @@ export function fetchArticle(state = {}, action) {
 			return Object.assign({}, state, {
 				loading: true
 			});
+		case types.UP_REPLY:
+			if (action.success && action.action === 'up') {
+				state.data.replies[action.index].ups += 1;
+			} else if(action.success && action.action === 'down'){
+				state.data.replies[action.index].ups -= 1;
+			}
+			return {
+				...state
+			};
 		default:
 			return state;
 	}
@@ -49,7 +66,9 @@ export function input(state = {}, action) {
 		case types.OPEN_INPUT:
 			return {
 				...state,
-				canInput: action.value
+				canInput: action.value,
+				author: action.author,
+				reply_id: action.reply_id
 			};
 		case types.CLOSE_INPUT:
 			return {
