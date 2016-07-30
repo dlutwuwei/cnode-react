@@ -56,7 +56,7 @@ function formatParams(data) {
             arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
         }
     }
-    arr.push(('v=' + Math.random()).replace('.'));
+    //arr.push(('v=' + Math.random()).replace('.'));
     return arr.join('&');
 }
 

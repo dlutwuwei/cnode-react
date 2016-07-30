@@ -60,16 +60,6 @@ export const fetchArticle = (id) => {
 
 export const upReply = (id, index, accesstoken) => {
   return dispatch => {
-    // return fetch(`https://cnodejs.org/api/v1/reply/${id}/ups`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   cache: 'defalut',
-    //   mode: 'cors',
-    //   body: JSON.stringify({ accesstoken })
-    // })
     return post(`//cnodejs.org/api/v1/reply/${id}/ups`, {
       accesstoken: accesstoken
     })
@@ -95,6 +85,24 @@ export const postReply = (id, replyid, accesstoken) => {
       });
   };
 };
+
+export const postArticle = (accesstoken) => {
+  return dispatch => {
+    return post('//cnodejs.org/api/v1/topics', {
+      accesstoken: accesstoken,
+      content: document.querySelector('.markdown-textarea #html').innerHTML,
+      title: document.getElementById('title').value,
+      tab: document.getElementById('tab').value
+    }).then(response => {
+      const res = JSON.parse(response);
+      if (res.success === true) {
+        dispatch(closeInput());
+      } else {
+        alert(res.error_msg);
+      }
+    })
+  }
+}
 
 export function isAppending() {
   return {

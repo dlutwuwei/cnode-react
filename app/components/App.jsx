@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ListItem from './ListItem.jsx';
 import Xinput from './Xinput.jsx';
 
-import { fetchList, isAppending, fetchArticle, canInput, closeInput} from '../actions';
+import { fetchList, isAppending, fetchArticle, canInput, closeInput, postArticle} from '../actions';
 import $ from 'jquery';
 
 require('./App.less');
@@ -82,6 +82,10 @@ var App = React.createClass({
 		}
 
 	},
+	postComment(event){
+
+		this.props.dispatch(postArticle(localStorage.getItem('accesstoken')))
+	},
 	renderLoading() {
 		return (
 			<div className="loading">
@@ -102,7 +106,7 @@ var App = React.createClass({
 		
 		let textarea = null;
 		if(this.props.input.canInput){
-			textarea =<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid="" placeholder=""/>
+			textarea = (<Xinput onCancel={this.onCancel} onPost={this.postComment} replyid="" placeholder="" title="true" />);
 		}
 		if (this.props.articleList.loading) {
 			return (
