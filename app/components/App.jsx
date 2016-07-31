@@ -46,7 +46,7 @@ var App = React.createClass({
 	handleClick(){
 		var accesstoken = localStorage.getItem('accesstoken');
 		if(!accesstoken){
-			this.props.history.push(location,'/login');
+			this.props.history.push('/login');
 			return;
 		}
 		this.props.dispatch(canInput());

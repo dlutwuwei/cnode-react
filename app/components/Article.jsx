@@ -40,7 +40,7 @@ var Article = React.createClass({
 		return (evt) => {
 			var accesstoken = this.getAccessToken();
 			if (!accesstoken) {
-				this.props.history.push(location, '/login');
+				this.props.history.push('/login');
 				return;
 			}
 			this.props.dispatch(canInput(author, reply_id));

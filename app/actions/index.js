@@ -100,8 +100,8 @@ export const postArticle = (accesstoken) => {
       } else {
         alert(res.error_msg);
       }
-    })
-  }
+    });
+  };
 }
 
 export function isAppending() {

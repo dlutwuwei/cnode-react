@@ -14,7 +14,7 @@ var login = React.createClass({
 				localStorage.setItem('loginid', ret.id);
 				localStorage.setItem('accesstoken', $('#code').val());
 				localStorage.setItem('loginname', ret.loginname);
-				this.props.history.push(location, '/me')
+				this.props.history.push('/me')
 			}
 		}.bind(this));
 	},

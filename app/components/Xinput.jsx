@@ -99,7 +99,7 @@ var xinput = React.createClass({
 
 		let title_inputbox = null;
 		if(this.props.title === 'true'){
-			title_inputbox = (<div><input type="text" id="title" className="title"/>
+			title_inputbox = (<div className="title"><label htmlFor="">标题：</label><input type="text" id="title" />
 				<select name="" id="tab">
 					<option value="share">share</option>
 					<option value="ask" selected>ask</option>
@@ -113,8 +113,8 @@ var xinput = React.createClass({
 					<li className={this.state.write?"nav select":"nav"} onClick={this.writeClick}>输入(markdown)</li>
 					<li className={this.state.preview?"nav select":"nav"} onClick={this.previewClick}>预览</li>
 				</ul>
-				{ title_inputbox }
 				<div className={text_classname} onScroll={this.onScroll}>
+					{ title_inputbox }
 					<textarea className='text' rows="20" placeholder={this.props.placeholder}></textarea>
 					<div className="short_container"><ul className='shortcut' onClick={this.onShortcut}>
 						<li data-ref="title"># 标题</li>

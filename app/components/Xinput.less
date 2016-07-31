@@ -33,19 +33,45 @@
 	.hidden{
 		display: none;
 	}
+	
 	.tab{
 		height: 100%;
 		background-color: #fff;
 		border-top: 1px solid #0b6fa2;
 		overflow: auto;
+		position: relative;
+
+		.title{
+			position: absolute;
+			top: 0;
+			height: 30px;
+			line-height: 30px;
+			white-space: nowrap;
+			vertical-align: top;
+			input{
+				height: 30px;
+				vertical-align: top;
+			}
+			label{
+				padding: 0;
+				vertical-align: top;
+			}
+			select{
+				height: 30px;
+				vertical-align: top;
+			}
+		}
 		textarea{
+			position: absolute;
+			top: 30px;
+			bottom: 35px;
 			width: 100%;
-			box-sizing: border-box;
-			//border: 1px solid #eee;
+			border: 0;
+			padding: 0 6px;
 		}
 		.short_container{
-			position: fixed;
-			bottom: 35px;
+			position: absolute;
+			bottom: 0;
 			width: 100%;
 		}
 		.shortcut{
@@ -56,7 +82,7 @@
 			line-height: 35px;
 			vertical-align: middle;
 			background-color: #ecf6ed;
-			box-sizing: border-box;
+			margin: 0;
 			li:last-child{
 				border-right: none;
 			}

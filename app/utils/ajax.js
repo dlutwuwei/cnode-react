@@ -1,17 +1,3 @@
-
-// ajax({
-//     url: './TestXHR.aspx',              //请求地址
-//     type: 'POST',                       //请求方式
-//     data: { name: 'super', age: 20 },        //请求参数
-//     dataType: 'json',
-//     success: function (response, xml) {
-//         // 此处放成功后执行的代码
-//     },
-//     fail: function (status) {
-//         // 此处放失败后执行的代码
-//     }
-// });
-
 function ajax(opts) {
     const options = opts || {};
     options.type = (options.type || 'GET').toUpperCase();
