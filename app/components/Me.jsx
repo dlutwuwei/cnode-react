@@ -7,7 +7,7 @@ import {
 
 require('./Me.less');
 
-var Me = React.createClass({
+const Me = React.createClass({
 	getInitialState() {
 		return {
 			recent_topics: [],

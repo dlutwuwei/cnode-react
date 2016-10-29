@@ -27,9 +27,7 @@ export function articleList(state = {}, action) {
 	}
 }
 
-export function fetchArticle(state = {}, action) {
-	//console.log(action.type, state)
-
+export function articlePage(state = {}, action) {
 	switch (action.type) {
 		case types.FETCH_ARTICLE:
 			if(action.data && action.data.data.replies){
@@ -61,7 +59,7 @@ export function fetchArticle(state = {}, action) {
 	}
 }
 
-export function input(state = {}, action) {
+export function inputBox(state = {}, action) {
 	switch (action.type) {
 		case types.OPEN_INPUT:
 			return {

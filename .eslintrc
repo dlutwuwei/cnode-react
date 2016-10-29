@@ -2,8 +2,8 @@
   "env": {
     "node": true
   },
-  ecmaFeatures: {
-
+  "ecmaFeatures": {
+    "es6": true
   },
   "globals": {
   },
@@ -11,7 +11,7 @@
   ],
   "extends": "eslint-config-airbnb",
   "rules": {
-    'indent':0,
+    "indent":0,
     "comma-dangle": 0,
     "no-console": 0,
     "id-length": 0,

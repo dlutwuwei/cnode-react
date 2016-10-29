@@ -18,8 +18,8 @@ require('./main.less');
 
 
 // Pages
-import Index from './components/App.jsx';
-import article from './components/Article.jsx';
+import Index from './containers/App.jsx';
+import article from './containers/Article.jsx';
 import me from'./components/Me.jsx';
 import login from './components/Login.jsx';
 import Nav from './components/Nav.jsx';

@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import $ from 'jquery';
 import { Link } from 'react-router';
 require('./Nav.less');
@@ -7,32 +6,32 @@ require('./Nav.less');
 export default React.createClass({
 	getInitialState() {
 		return {
-			maxWidth: 320 
+			maxWidth: 320
 		};
 	},
-	fold(){
+	fold() {
 		$('.header .container').removeClass('moveright').addClass('moveleft');
-		setTimeout(function(){
+		setTimeout(function () {
 			$('.header .container').hide();
-		},500)
+		}, 500);
 	},
-	unfold(){
+	unfold() {
 		$('.header .container').show().removeClass('moveleft').addClass('moveright');
 	},
-	renderNavLst(){
+	renderNavLst() {
 		const accesstoken = localStorage.getItem('accesstoken');
-		var head;
-		if(accesstoken){
-			head = <div className="nav-login">
-						<Link to="/me">
-							<img src={localStorage.getItem('avatar_url')} alt=""/>
-							<span>{localStorage.getItem('loginname')}</span>
-						</Link>
-					</div>
-		}else{
-			head = <div className="nav-login">
-						<Link to="/login" className='fa-arrow-circle-right'>登陆</Link>
-					</div>
+		let head;
+		if (accesstoken) {
+			head = (<div className="nav-login">
+				<Link to="/me">
+					<img src={localStorage.getItem('avatar_url')} alt="" />
+					<span>{localStorage.getItem('loginname')}</span>
+				</Link>
+			</div>);
+		} else {
+			head = (<div className="nav-login">
+				<Link to="/login" className='fa-arrow-circle-right'>登陆</Link>
+			</div>);
 		}
 		return (
 			<div className='sider'>
@@ -43,15 +42,15 @@ export default React.createClass({
 					<li><Link to="/good" className='fa-thumbs-up'>精华</Link></li>
 					<li><Link to="/ask" className='fa-question-circle'>问答</Link></li>
 					<li><Link to="/job" className='fa-male'>招聘</Link></li>
-					<li><Link to="/" className="">消息</Link></li>
+					<li><Link to="/notice" className="">消息</Link></li>
 					<li><Link to="/" className="">关于</Link></li>
 				</ul>
 			</div>
-			)
-	}, 
-	render(){
+		)
+	},
+	render() {
 		return <div className="header">
-			<div className='navtop'>			
+			<div className='navtop'>
 				<Link to="/" className='brand'>CNODEJS</Link>
 				<button onClick={this.unfold} className="fa fa-align-justify"></button>
 			</div>

@@ -8,3 +8,4 @@ export const POST_COMMENT = 'POST_COMMENT';
 export const POST_ARTICLE = 'POST_ARTICLE';
 export const INPUT_VALUE = 'INPUT_VALUE';
 export const UP_REPLY = 'UP_REPLY';
+export const NOTICE_LOADED = 'NOTICE_LOADED';
