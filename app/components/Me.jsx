@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import { Link } from 'react-router';
 import {
 	fromNow
 } from '../utils/format.js';
@@ -40,18 +41,21 @@ var Me = React.createClass({
 	render() {
 		var replies = this.state.recent_replies.map((item, index)=>{
 			return (<li key={index}>
+			        <Link to={"/article/"+item.id}>
 					<img src={item.author.avatar_url} alt=""/>
 					<div className='item'>
-						<div className='title'><a href={'#article/'+item.id}>{item.title}</a></div>
+						<div className='title'>{item.title}</div>
 						<p>
 							<span>{item.author.loginname}</span>
 							<span>{fromNow(item.last_reply_at)}前</span>
 						</p>
 					</div>
+					</Link>
 					</li>);
 		});
 		var topics = this.state.recent_topics.map((item, index)=>{
 			return(<li key={index}>
+					<Link to={"/article/"+item.id}>
 					<img src={item.author.avatar_url} alt=""/>
 					<div className='item'>
 						<div className='title'><a href={'#article/'+item.id}>{item.title}</a></div>
@@ -60,6 +64,7 @@ var Me = React.createClass({
 							<span>{fromNow(item.last_reply_at)}前</span>
 						</p>
 					</div>
+					</Link>
 					</li>);
 		})
 		return (
@@ -87,7 +92,7 @@ var Me = React.createClass({
 						</div>
 					</div>
 				</div>
-				<button onClick={this.quit}>退出</button>
+				<div className="btn-container"><button onClick={this.quit}>退出</button></div>
 			 </div>
 		);
 	}
