@@ -61,10 +61,11 @@ export function canInput(author, replyId) {
   };
 }
 
-export function closeInput() {
+export function closeInput(refresh) {
   return {
     type: types.CLOSE_INPUT,
-    value: false
+    value: false,
+    refresh: refresh
   };
 }
 
@@ -108,7 +109,8 @@ export const postReply = (id, replyid, accesstoken) => {
       .then(response => {
         const res = JSON.parse(response);
         if (res.success === true) {
-          dispatch(closeInput());
+          dispatch(closeInput(true));
+          dispatch(fetchArticle(id));
         } else {
           alert('post failed');
         }

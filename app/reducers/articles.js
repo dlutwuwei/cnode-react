@@ -66,12 +66,13 @@ export function inputBox(state = {}, action) {
 				...state,
 				canInput: action.value,
 				author: action.author,
-				reply_id: action.reply_id
+				reply_id: action.replyId
 			};
 		case types.CLOSE_INPUT:
 			return {
 				...state,
-				canInput: action.value
+				canInput: action.value,
+				refresh: action.refresh // when post reply refresh article page forcely.
 			};
 		case types.INPUT_VALUE:
 			return {

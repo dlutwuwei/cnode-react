@@ -58,7 +58,7 @@ module.exports = {
     new ExtractTextPlugin('app.css'),
     new webpack.HotModuleReplacementPlugin(),
     new OpenBrowserPlugin({
-      url: 'https://localhost:8080'
+      url: 'http://localhost:8080'
     })
   ]
 };

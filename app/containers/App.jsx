@@ -121,7 +121,6 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
-	console.log('app', state);
 	return {
 		mrt: 0,
 		input: state.inputBox,

@@ -15,11 +15,7 @@ const Article = React.createClass({
 		this.getData(this.props.params.id);
 	},
 	componentDidUpdate(prevProps) {
-		const oldId = prevProps.params.id;
-		const newId = this.props.params.id;
-		if (newId !== oldId) {
-			this.getData(newId);
-		}
+		console.log('update');
 	},
 	getData(id) {
 		const { dispatch } = this.props;
@@ -36,6 +32,7 @@ const Article = React.createClass({
 		this.props.dispatch(closeInput());
 	},
 	onReplyClick(author, replyId) {
+		// when replyId is null, reply to article, else to replies
 		return () => {
 			const accesstoken = this.getAccessToken();
 			if (!accesstoken) {
@@ -50,7 +47,7 @@ const Article = React.createClass({
 	},
 	onPostComment(replyId) {
 		return () => {
-			this.props.dispatch(postReply(this.props.fetchArticle.data.id, replyId, this.getAccessToken()));
+			this.props.dispatch(postReply(this.props.fetchedArticles.data.id, replyId, this.getAccessToken()));
 		};
 	},
 	onUpClick(id, index) {
@@ -74,7 +71,7 @@ const Article = React.createClass({
 
 		const replies = fetchedArticles.data.replies.map((item, index) => {
 			return (
-				<Reply data={item} key={index} onReplyClick={this.onReplyClick(item.author.loginname, item.id)} onUpClick={this.onUpClick(item.id, index) }/>
+				<Reply data={item} key={index} onReplyClick={this.onReplyClick(item.author.loginname, item.reply_id)} onUpClick={this.onUpClick(item.id, index) }/>
 			);
 		});
 
@@ -107,7 +104,7 @@ const Article = React.createClass({
 							{replies}
 						</ul>
 					</section>
-					<div className="answer fa fa-reply-all" onClick={this.onReplyClick('')}></div>
+					<div className="answer fa fa-reply-all" onClick={this.onReplyClick('', null)}></div>
 				</div>
 				{textarea}
 			</div>
@@ -120,7 +117,6 @@ Article.propTypes = {
 };
 
 function mapStateToProps(state) {
-	console.log('article', state);
 	return {
 		input: state.inputBox,
 		fetchedArticles: state.articlePage
