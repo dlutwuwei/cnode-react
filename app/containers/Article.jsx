@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {
 	fromNow
@@ -86,7 +87,7 @@ const Article = React.createClass({
 				<div className="article">
 					<h2 className="title">{fetchedArticles.data.title}</h2>
 					<div className="author">
-						<img src={fetchedArticles.data.author.avatar_url} alt="" className="avatar"/>
+						<Link to={`/me#${fetchedArticles.data.author.loginname}`}><img src={fetchedArticles.data.author.avatar_url} alt="" className="avatar"/></Link>
 						<div className="info">
 							<div className="col">
 								<span className="name">{fetchedArticles.data.author.loginname}</span>

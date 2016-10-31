@@ -13,6 +13,8 @@ import me from'./components/Me.jsx';
 import login from './components/Login.jsx';
 import Nav from './components/Nav.jsx';
 import Notice from './containers/Notice.jsx';
+import About from './components/About.jsx';
+
 require('./amaze.ui.css');
 require('./main.less');
 
@@ -44,6 +46,7 @@ const routes = (
     <Route path="/" component={Main}>
       <IndexRoute component={Index} />
       <Route path="/me" component={me}/>
+      <Route path="/about" component={About}/>
       <Route path="/notice" component={Notice}/>
       <Route path="/login" component={login}/>
       <Route path="/:type" component={Index} />

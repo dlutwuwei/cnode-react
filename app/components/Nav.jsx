@@ -43,7 +43,7 @@ export default React.createClass({
 					<li><Link to="/ask" className='fa-question-circle'>问答</Link></li>
 					<li><Link to="/job" className='fa-male'>招聘</Link></li>
 					<li><Link to="/notice" className="">消息</Link></li>
-					<li><Link to="/" className="">关于</Link></li>
+					<li><Link to="/about" className="">关于</Link></li>
 				</ul>
 			</div>
 		)
@@ -51,6 +51,7 @@ export default React.createClass({
 	render() {
 		return <div className="header">
 			<div className='navtop'>
+				<a href="javascript:history.back()" className="back fa fa-chevron-left"></a>
 				<Link to="/" className='brand'>CNODEJS</Link>
 				<button onClick={this.unfold} className="fa fa-align-justify"></button>
 			</div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import {
@@ -7,8 +7,7 @@ import {
 
 require('./ListItem.less');
 
-var ListItem = React.createClass({
-    displayName: 'ListItem',
+class ListItem extends Component {
     render() {
     	const info = this.props;
         return (
@@ -33,6 +32,6 @@ var ListItem = React.createClass({
 			</Link>          
             </li>);
     }
-});
+}
 
 module.exports = ListItem;
