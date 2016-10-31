@@ -10,15 +10,15 @@ require('./ListItem.less');
 var ListItem = React.createClass({
     displayName: 'ListItem',
     render() {
-    	let info = this.props;
+    	const info = this.props;
         return (
-            <li className='list-item'>
-             <Link to={"/article/"+info.id}>
-				<div className={classnames("title",info.top?'top':info.tab)}>
+            <li className="list-item">
+             <Link to={'/article/' + info.id}>
+				<div className={classnames('title', info.top ? 'top' : info.tab)}>
 					{info.title}
 				</div>
 				<div className="content" >
-					<img src={info.author.avatar_url} alt="" className="avatar"/>
+					<Link to={`/me#${info.author.loginname}`}><img src={info.author.avatar_url} alt="" className="avatar"/></Link>
 					<div className="info">
 						<p>
 							<span className="name">{info.author.loginname}</span>

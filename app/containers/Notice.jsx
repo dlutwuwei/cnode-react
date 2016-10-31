@@ -13,9 +13,7 @@ class Notice extends Component {
                 <div className="am-list-news am-list-news-default">
                     <div className="am-list-news-bd">
                         <div className="am-list-news-hd am-cf">
-                            <Link to="###" className="">
-                                <h2>未读消息</h2>
-                            </Link>
+                            <Link to="###" className=""><h2>未读消息</h2></Link>
                         </div>
                         <ul className="am-list">
                         {this.props.notice.data && this.props.notice.data.hasnot_read_messages.map((item, index) => {

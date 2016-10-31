@@ -2,6 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import './Xinput.less';
 import $ from 'jquery';
+import classnames from 'classnames';
 
 const xinput = React.createClass({
 	getInitialState() {
@@ -33,11 +34,11 @@ const xinput = React.createClass({
 	},
 	onShortcut(evt) {
 		const name = evt.target.getAttribute('data-ref');
-		const txt = document.getElementsByClassName('text');
+		const txt = $('#input');
 		let val = txt.val();
 		switch (name) {
 			case 'title': {
-				val += '#';
+				val += '# ';
 				txt.val(val);
 				break;
 			}
@@ -94,6 +95,7 @@ const xinput = React.createClass({
 		}
 
 		let titleInputbox = null;
+		console.log(this.props.title, 'title');
 		if (this.props.title === 'true') {
 			titleInputbox = (<div className="title"><label htmlFor="">标题：</label><input type="text" id="title" />
 				<select name="" id="tab">
@@ -111,7 +113,7 @@ const xinput = React.createClass({
 				</ul>
 				<div className={textClassname} onScroll={this.onScroll}>
 					{titleInputbox}
-					<textarea className="text" rows="20" placeholder={this.props.placeholder}></textarea>
+					<textarea id="input" className={classnames('text', this.props.title ? 'text-title' : '')} rows="20" placeholder={this.props.placeholder}></textarea>
 					<div className="short_container"><ul className="shortcut" onClick={this.onShortcut}>
 						<li data-ref="title"># 标题</li>
 						<li data-ref="center">[居中]</li>

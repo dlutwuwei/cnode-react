@@ -57,12 +57,13 @@ const Me = React.createClass({
 				</Link>
 			</li>);
 		});
-		var topics = this.state.recent_topics.map((item, index) => {
-			return (<li key={index}>
-				<Link to={"/article/" + item.id}>
+		const topics = this.state.recent_topics.map((item, index) => {
+			return (
+			<li key={index}>
+				<Link to={`/article/${item.id}`}>
 					<img src={item.author.avatar_url} alt="" />
-					<div className='item'>
-						<div className='title'><a href={'#article/' + item.id}>{item.title}</a></div>
+					<div className="item">
+						<div className="title">{item.title}</div>
 						<p>
 							<span>{item.author.loginname}</span>
 							<span>{fromNow(item.last_reply_at)}前</span>
@@ -70,7 +71,7 @@ const Me = React.createClass({
 					</div>
 				</Link>
 			</li>);
-		})
+		});
 		return (
 			<div className="me">
 				<div className="me-header">
