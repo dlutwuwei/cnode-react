@@ -1,11 +1,22 @@
 import React from 'react';
 import { createStore, applyMiddleware, combineReducers} from 'redux';
 import * as reducers from '../reducers';
-import thunkMiddleware from 'redux-thunk';
+//import thunkMiddleware from 'redux-thunk';
 import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 import { routerReducer } from 'react-router-redux';
+
+// middle redux test
+function thunkMiddleware({ dispatch, getState }, ...extraArgument) {
+    //闭包 dispatch,getState
+    return next => action => {
+        if (typeof action === 'function') {
+            return action(dispatch, getState, extraArgument);
+        }
+        return next(action);
+    }
+};
 
 const createStoreWithMiddleware = applyMiddleware(
     thunkMiddleware

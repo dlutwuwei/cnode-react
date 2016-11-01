@@ -16,9 +16,9 @@ function ajax(opts) {
         if (xhr.readyState === 4) {
             const status = xhr.status;
             if (status >= 200 && status < 300) {
-                options.success && options.success(xhr.responseText, xhr.responseXML);
+                if (options.success) options.success(xhr.responseText, xhr.responseXML);
             } else {
-                options.fail && options.fail(status);
+                if (options.fail) options.fail(status);
             }
         }
     };
@@ -39,7 +39,7 @@ function formatParams(data) {
     const arr = [];
     if (data) {
         for (const name in data) {
-            arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+            if (name) arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
         }
     }
     //arr.push(('v=' + Math.random()).replace('.'));
