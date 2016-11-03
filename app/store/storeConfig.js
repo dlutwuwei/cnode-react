@@ -18,8 +18,30 @@ function thunkMiddleware({ dispatch, getState }, ...extraArgument) {
     }
 };
 
-const createStoreWithMiddleware = applyMiddleware(
-    thunkMiddleware
+function requireLoginMiddleware( {dispatch, getState }, ...extraArgument) {
+    return next => action => {
+        let accesstoken = localStorage.getItem('accesstoken');
+        console.log(action);
+        if(!accesstoken) {
+            if(action.isRequireLogin) {
+                return next({
+                    type: '@@router/LOCATION_CHANGE',
+                    payload: {
+                        action: 'POP',
+                        pathname: '/login',
+                        key: '1gpxd0',
+                        query: {},
+                        hash: '',
+                    }
+                })
+            }
+        }
+        return next(action);
+    }
+}
+const createStoreWithMiddleware = applyMiddleware( 
+    thunkMiddleware,
+    requireLoginMiddleware
 )(createStore);
 
 const DevTools = createDevTools(
