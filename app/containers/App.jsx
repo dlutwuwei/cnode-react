@@ -28,10 +28,10 @@ const App = React.createClass({
 	},
 	handleScroll(event) {
 		const { dispatch, params } = this.props;
-		//下拉加载
+		// 下拉加载
 		if (!this.props.articleList.appending && (document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
-			//console.log(event.target.scrollTop,event.target.clientHeight,event.target.scrollHeight)
-			dispatch(fetchList(params.type||'', this.props.articleList.page + 1));
+			// console.log(event.target.scrollTop,event.target.clientHeight,event.target.scrollHeight)
+			dispatch(fetchList(params.type || '', this.props.articleList.page + 1));
 		}
 	},
 	handleClick() {

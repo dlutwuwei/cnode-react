@@ -18,7 +18,6 @@ import About from './components/About.jsx';
 require('./amaze.ui.css');
 require('./main.less');
 
-
 class Main extends React.Component {
   constructor(props, context) {
       super(props, context);
@@ -36,8 +35,6 @@ class Main extends React.Component {
   }
 }
 
-
-
 const store = configureStore();
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store);
@@ -54,7 +51,6 @@ const routes = (
     </Route>
   </Router>
 );
-
 
 ReactDOM.render(
   <Provider store={store}>
