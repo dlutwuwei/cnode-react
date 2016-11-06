@@ -69,12 +69,19 @@ var login = React.createClass({
 		}
 	},
 	snapshot() {
-		this.canvas.getContext('2d').drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
+		this.canvas.getContext('2d').drawImage(this.video, 0, 0, 260, 200);
 		//qrcode.decode();
 	},
 	componentDidMount() {
 		this.canvas = document.getElementById('qr-canvas');
 		this.video = document.getElementById('monitor');
+		this.file = document.getElementById('image');
+		this.file.addEventListener('change', e => {
+			console.log(e);
+		});
+	},
+	fileshot() {
+		this.file.click();
 	},
 	render() {
 		return (
@@ -93,7 +100,8 @@ var login = React.createClass({
 				<div className="content">
 					<button onClick={this.photoin} className="am-btn-primary">开启摄像头</button>
 					<button onClick={this.snapshot} className="am-btn-primary">拍照识别</button>
-					<button onClick={this.snapshot} className="am-btn-primary">文件识别</button>
+					<button onClick={this.fileshot} className="am-btn-primary">文件识别</button>
+					<input id="image" className="hide" type="file"/>
 				</div>
 				<div className="monitor">
 				<canvas id="qr-canvas" className="photo"></canvas>
