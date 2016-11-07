@@ -25,10 +25,10 @@ var login = React.createClass({
 			try {
 				navigator.mediaDevices.enumerateDevices()
 					.then((devices) => {
-						devices.forEach( (device, index) => {
+						devices.forEach((device, index) => {
 							if (device.kind === 'videoinput') {
 								if (device.label.toLowerCase().indexOf('back') > 0) {
-									options = { 'deviceId': { 'exact': device.deviceId }, 'facingMode': 'environment',label: device.label};
+									options = { 'deviceId': { 'exact': device.deviceId }, 'facingMode': 'environment', label: device.label };
 								}
 								console.log(device.deviceId, device.label);
 							}
@@ -69,15 +69,44 @@ var login = React.createClass({
 		}
 	},
 	snapshot() {
-		this.canvas.getContext('2d').drawImage(this.video, 0, 0, 260, 200);
-		//qrcode.decode();
+		this.canvas.getContext('2d').drawImage(this.video, 0, 0, 320, 240);
 	},
 	componentDidMount() {
 		this.canvas = document.getElementById('qr-canvas');
 		this.video = document.getElementById('monitor');
 		this.file = document.getElementById('image');
-		this.file.addEventListener('change', e => {
+		const self = this;
+		self.canvas.getContext('2d').clearRect(0, 0, 320, 240);
+		qrcode.callback = function(a) {
+			console.log(a);
+			document.getElementById('code').value = a;
+		};
+
+		this.file.addEventListener('change', function(e) {
 			console.log(e);
+			const resultFile = this.files[0];
+			if (resultFile) {
+				const fr = new FileReader();
+				// onload fires after reading is complete
+				fr.onload = function(e) {
+					qrcode.decode(e.target.result);
+
+					const img = new Image();
+					img.src = fr.result;
+					img.onload = function() {
+						self.canvas.getContext('2d').drawImage(img, 0, 0);
+					};
+				};
+				fr.readAsDataURL(resultFile);
+				// fr.onload = function(e) {
+				// 	let img = new Image();
+				// 	img.onload = function() {
+				// 		self.canvas.getContext('2d').drawImage(img, 0, 0);
+				// 	};
+				// 	img.src = fr.result;
+				// };
+			}
+
 		});
 	},
 	fileshot() {
@@ -94,17 +123,17 @@ var login = React.createClass({
 				</section>
 				<span>输入用户access-code：</span>
 				<div className="content">
-					<input id="code" type="text"/>
+					<input id="code" type="text" />
 					<button onClick={this.signin} className="am-btn-primary">登陆</button>
 				</div>
 				<div className="content">
 					<button onClick={this.photoin} className="am-btn-primary">开启摄像头</button>
 					<button onClick={this.snapshot} className="am-btn-primary">拍照识别</button>
 					<button onClick={this.fileshot} className="am-btn-primary">文件识别</button>
-					<input id="image" className="hide" type="file"/>
+					<input id="image" className="hide" type="file" />
 				</div>
 				<div className="monitor">
-				<canvas id="qr-canvas" className="photo"></canvas>
+					<canvas id="qr-canvas" className="photo"></canvas>
 				</div>
 			</div>
 		);
