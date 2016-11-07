@@ -70,6 +70,7 @@ var login = React.createClass({
 	},
 	snapshot() {
 		this.canvas.getContext('2d').drawImage(this.video, 0, 0, 320, 240);
+		qrcode.decode();
 	},
 	componentDidMount() {
 		this.canvas = document.getElementById('qr-canvas');
@@ -81,9 +82,10 @@ var login = React.createClass({
 			console.log(a);
 			document.getElementById('code').value = a;
 		};
+		qrcode.width = 320;
+		qrcode.height = 240;
 
 		this.file.addEventListener('change', function(e) {
-			console.log(e);
 			const resultFile = this.files[0];
 			if (resultFile) {
 				const fr = new FileReader();
@@ -92,19 +94,14 @@ var login = React.createClass({
 					qrcode.decode(e.target.result);
 
 					const img = new Image();
-					img.src = fr.result;
+					img.src = e.target.result;
+					img.crossOrigin = "Anonymous";
 					img.onload = function() {
-						self.canvas.getContext('2d').drawImage(img, 0, 0);
+						self.canvas.getContext('2d').clearRect(0, 0, 320, 240);
+						self.canvas.getContext('2d').drawImage(img, 0, 0, 320, 240);
 					};
 				};
 				fr.readAsDataURL(resultFile);
-				// fr.onload = function(e) {
-				// 	let img = new Image();
-				// 	img.onload = function() {
-				// 		self.canvas.getContext('2d').drawImage(img, 0, 0);
-				// 	};
-				// 	img.src = fr.result;
-				// };
 			}
 
 		});
@@ -133,7 +130,7 @@ var login = React.createClass({
 					<input id="image" className="hide" type="file" />
 				</div>
 				<div className="monitor">
-					<canvas id="qr-canvas" className="photo"></canvas>
+					<canvas id="qr-canvas" width="320" height="240"></canvas>
 				</div>
 			</div>
 		);
