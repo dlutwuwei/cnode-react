@@ -54,9 +54,12 @@
 			a{
 				display: block;
 				font-size: 20px;
+				line-height: 40px;
+				&::before {
+					margin-right: 10px;
+				}
 			}
 			span {
-				padding: 8px 0;
 				display: block;
 			}
 			img{
@@ -66,6 +69,9 @@
 			}
 		}
 		ul{
+			li {
+				line-height: 30px;
+			}
 			li:hover{
 				background: #eee;
 			}

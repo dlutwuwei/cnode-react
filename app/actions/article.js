@@ -57,7 +57,8 @@ export function canInput(author, replyId) {
     type: types.OPEN_INPUT,
     value: true,
     author: author,
-    replyId: replyId || ''
+    replyId: replyId || '',
+    isRequiredLogin: true
   };
 }
 

@@ -18,12 +18,14 @@ function thunkMiddleware({ dispatch, getState }, ...extraArgument) {
     }
 };
 
+const requireLoginPath = ['/notice'];
+
 function requireLoginMiddleware( {dispatch, getState }, ...extraArgument) {
     return next => action => {
         let accesstoken = localStorage.getItem('accesstoken');
         console.log(action);
         if(!accesstoken) {
-            if(action.isRequireLogin) {
+            if(action.isRequiredLogin || (action.payload && requireLoginPath.includes(action.payload.pathname))) {
                 return next({
                     type: '@@router/LOCATION_CHANGE',
                     payload: {

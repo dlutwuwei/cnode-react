@@ -35,11 +35,11 @@ const Article = React.createClass({
 	onReplyClick(author, replyId) {
 		// when replyId is null, reply to article, else to replies
 		return () => {
-			const accesstoken = this.getAccessToken();
-			if (!accesstoken) {
-				this.props.history.push('/login');
-				return;
-			}
+			// const accesstoken = this.getAccessToken();
+			// if (!accesstoken) {
+			// 	this.props.history.push('/login');
+			// 	return;
+			// }
 			this.props.dispatch(canInput(author, replyId));
 		};
 	},
