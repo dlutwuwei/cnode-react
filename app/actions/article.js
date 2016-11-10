@@ -87,16 +87,30 @@ export const fetchArticle = (id) => {
 
     return fetch(`//cnodejs.org/api/v1/topic/${id || ''}`)
       .then(response => response.json())
-      .then(json => dispatch(receiveArticle(json)));
+      .then(json => dispatch(receiveArticle(json)))
+      .catch(err => {
+        console.log(err);
+      });
   };
 };
 
 export const upReply = (id, index, accesstoken) => {
   return dispatch => {
-    return post(`//cnodejs.org/api/v1/reply/${id}/ups`, {
-      accesstoken: accesstoken
-    })
-      .then(response => dispatch(upSuccess(JSON.parse(response), id, index)));
+    return fetch(`https://cnodejs.org/api/v1/reply/${id}/ups`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          accesstoken: accesstoken
+        })
+      }).then(response => response.json())
+      .then(response => dispatch(upSuccess(response, id, index)));
+
+  //   return post(`//cnodejs.org/api/v1/reply/${id}/ups`, {
+  //     accesstoken: accesstoken
+  //   })
+  //   .then(response => dispatch(upSuccess(JSON.parse(response), id, index)));
   };
 };
 
@@ -107,16 +121,16 @@ export const postReply = (id, replyid, accesstoken) => {
       content: document.querySelector('.markdown-textarea #html').innerHTML,
       reply_id: replyid
     })
-      .then(response => {
-        const res = JSON.parse(response);
-        if (res.success === true) {
-          dispatch(closeInput(true));
-          dispatch(fetchArticle(id));
-        } else {
-          alert('post failed');
-        }
-        // dispatch( postCommentSuccess(JSON.parse(response)) );
-      });
+    .then(response => {
+      const res = JSON.parse(response);
+      if (res.success === true) {
+        dispatch(closeInput(true));
+        dispatch(fetchArticle(id));
+      } else {
+        alert('post failed');
+      }
+      // dispatch( postCommentSuccess(JSON.parse(response)) );
+    });
   };
 };
 

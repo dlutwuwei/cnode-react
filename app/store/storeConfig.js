@@ -23,7 +23,6 @@ const requireLoginPath = ['/notice'];
 function requireLoginMiddleware( {dispatch, getState }, ...extraArgument) {
     return next => action => {
         let accesstoken = localStorage.getItem('accesstoken');
-        console.log(action);
         if(!accesstoken) {
             if(action.isRequiredLogin || (action.payload && requireLoginPath.includes(action.payload.pathname))) {
                 return next({
