@@ -34,7 +34,7 @@ function postCommentSuccess(data) {
   return {
     type: types.POST_COMMENT,
     success: data.success
-  }
+  };
 }
 
 
