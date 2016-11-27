@@ -12,10 +12,11 @@
     可预览编辑效果
 - 登陆优化
     实现html图片和拍照识别二维码（系统原因不可使用后置摄像头）
+
+![使用](./cnodejs.gif)
 ## 启动过程
 
-
--启动调试
+- 启动调试
 
 ```bash
 $ npm start
@@ -23,7 +24,7 @@ $ npm start
 
 http://localhost:8080.
 
--生成发布文件
+- 生成发布文件
 
 ```bash
 $ npm run deploy
